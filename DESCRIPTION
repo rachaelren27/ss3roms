@@ -1,0 +1,57 @@
+Package: ss3roms
+Title: Modeling ROMS variables in Stock Synthesis
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = c("Kelli", "F."),
+           family = "Johnson",
+           role = c("aut", "cre"),
+           email = "kelli.johnson@noaa.gov",
+           comment = c(ORCID = "0000-0002-5149-451X")
+    ),
+    person(given = c("Kiva", "L."),
+           family = "Oken",
+           role = c("aut"),
+           email = "kiva.oken@noaa.gov",
+           comment = c(ORCID = "0000-0002-5627-6837")
+    ),
+    person(given = c("Kristin", "N."),
+           family = "Marshall",
+           role = c("aut"),
+           email = "kristin.marshall@noaa.gov",
+           comment = c(ORCID = "0000-0002-9769-2300")
+    ),
+    person(given = c("Aaron", "M."),
+           family = "Berger",
+           role = c("aut"),
+           email = "aaron.berger@noaa.gov",
+           comment = c(ORCID = "0000-0002-1408-7122")
+    )
+    )
+Description: Modeling ROMS variables in multiple Stock Synthesis models
+    that were used for management of species that inhabit waters off of
+    the U.S. West Coast.
+License: Not subject to copyright + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
+RoxygenNote: 7.1.2
+Imports:
+    dplyr,
+    glue,
+    grDevices,
+    ggplot2,
+    magrittr,
+    r4ss,
+    rlang,
+    stats,
+    utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat,
+    tinytex
+Remotes:
+    github::r4ss/r4ss
+Depends: 
+    R (>= 2.10)
