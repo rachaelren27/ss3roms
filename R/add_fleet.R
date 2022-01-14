@@ -122,7 +122,7 @@ add_fleet <- function(datlist,
     "catch" = "fleet",
     "CPUE" = "index"
   )
-
+  
   # Change data file
   datlist[["Nfleets"]] <- datlist[["Nfleets"]] + 1
   if (fleettype == "CPUE") {
@@ -133,7 +133,7 @@ add_fleet <- function(datlist,
     datlist[["fleetinfo"]],
     data.frame(
       # 1 is fishery, 2 is discard, 3 is survey
-      "type" = ifelse(fleettype == "CPUE", 1, 3),
+      "type" = ifelse(fleettype == "CPUE", 3, 1),
       # HARD-CODED surveytiming, area, and need_catch_mult
       "surveytiming" = 1,
       "area" = 1,
@@ -165,10 +165,11 @@ add_fleet <- function(datlist,
   row.names(datlist[["len_info"]]) <- datlist[["fleetnames"]]
   datlist[["age_info"]][datlist[["Nfleets"]], ] <- c(-1, 0.001, 0, 0, 0, 0, 0.001)
   row.names(datlist[["age_info"]]) <- datlist[["fleetnames"]]
-
+  
   # Alter the control file to add selectivity parameters for new survey
   ctllist[["Nfleets"]] <- datlist[["Nfleets"]]
   ctllist[["fleetnames"]] <- datlist[["fleetnames"]]
+  
   ctllist[["Q_options"]][datlist[["Nsurveys"]], ] <-
     ctllist[["Q_options"]][datlist[["Nsurveys"]] - 1, ]
   ctllist[["Q_options"]][datlist[["Nsurveys"]], "fleet"] <- datlist[["Nfleets"]]
@@ -189,22 +190,25 @@ add_fleet <- function(datlist,
   # discard = 0, i.e., no discarding
   # male = 0, i.e., no male-specific selectivity parameters
   # special = 0, i.e., no special selectivity information
-  ctllist[["age_selex_types"]][datlist[["Nfleets"]], ] <- c(11, rep(0, 3))
+  ctllist[["age_selex_types"]][datlist[["Nfleets"]], ] <- rep(0, 4)
   row.names(ctllist[["age_selex_types"]]) <- datlist[["fleetnames"]]
-  ctllist[["age_selex_parms"]][NROW(ctllist[["age_selex_parms"]]) + 1:2, ] <- data.frame(
-    LO = 0, HI = maxageselected + 1, INIT = c(minageselected, maxageselected),
-    PRIOR = -1, PR_SD = 0.01, PR_type = 0,
-    PHASE = -1,
-    "env_var&link" = 0, dev_link = 0, dev_minyr = 0, dev_maxyr = 0, dev_PH = 0,
-    Block = 0, Block_Fxn = 0
-  ) %>%
-    magrittr::set_rownames(
-      glue::glue('AgeSel_P_{1:2}_',
-        '{datlist[["fleetnames"]][datlist[["Nfleets"]]]}',
-        '({datlist[["Nfleets"]]})'
+  if(units < 30) {
+    # HARD-CODED: for units < 30 age-selectivity type is 11
+    ctllist[["age_selex_types"]][datlist[["Nfleets"]], 1] <- 11
+    ctllist[["age_selex_parms"]][NROW(ctllist[["age_selex_parms"]]) + 1:2, ] <- data.frame(
+      LO = 0, HI = maxageselected + 1, INIT = c(minageselected, maxageselected),
+      PRIOR = -1, PR_SD = 0.01, PR_type = 0,
+      PHASE = -1,
+      "env_var&link" = 0, dev_link = 0, dev_minyr = 0, dev_maxyr = 0, dev_PH = 0,
+      Block = 0, Block_Fxn = 0
+    ) %>%
+      magrittr::set_rownames(
+        glue::glue('AgeSel_P_{1:2}_',
+                   '{datlist[["fleetnames"]][datlist[["Nfleets"]]]}',
+                   '({datlist[["Nfleets"]]})'
+        )
       )
-    )
-
+  }  
   # return the lists that will need to be written to the disk
   invisible(list(datlist = datlist, ctllist = ctllist))
 }
