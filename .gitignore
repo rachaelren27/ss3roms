@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+test
+test_negEKE/
+test_posEKE/
+test_rec/
+inst/extdata/models/PacificHake/
+inst/extdata/models/retrospectives/
+*.png
