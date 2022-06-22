@@ -1,6 +1,7 @@
-
+# Try parallel computing?
 library(future)
 
+# Read SS3 data and control files
 dat <- r4ss::SS_readdat(
    file = system.file(
       "extdata", "models", "PacificHake", "hake_data.ss",
@@ -19,6 +20,7 @@ ctl <- r4ss::SS_readctl(
    version = 3.30
 )
 
+# Add environmental driver as a new index of log-recruitment deviations
 newlists <- add_fleet(
    datlist = dat,
    ctllist = ctl,
@@ -37,6 +39,7 @@ newlists <- add_fleet(
 dirname <- 'test_negEKE'
 #dirname <- 'test_posEKE'
 
+# Copy directory
 fs::dir_copy(
    path = system.file("extdata", "models", "PacificHake",
                       package = "ss3roms"
@@ -45,6 +48,7 @@ fs::dir_copy(
    overwrite = TRUE
 )
 
+# Write new ctl and dat files with environmental driver index
 r4ss::SS_writectl(
    ctllist = newlists[["ctllist"]],
    outfile = file.path(
@@ -64,6 +68,7 @@ r4ss::SS_writedat(
    verbose = FALSE
 )
 
+# Run models in parallel? (if using future_map)
 plan(multisession, workers = 3)
 #future_map(
 purrr::map(
@@ -79,13 +84,14 @@ r4ss::run_SS_models(dirvec = c('test_negEKE', 'test_posEKE'),
                     model = 'inst/extdata/bin/Windows64/ss',
                     skipfinished = FALSE)
 
+# Compare recruitment deviation estimates each year with and without environmental drivers
 temp <- r4ss::SSgetoutput(dirvec = c('test_negEKE', 'inst/extdata/models/PacificHake')) %>%
    r4ss::SSsummarize() %>% 
    r4ss::SSplotComparisons(subplots = 11, legendlabels = c('exp(-EKE)', '2021 Age1'))
-abline(v = c(1980.5, 2010.5))
+abline(v = c(1980.5, 2010.5)) # Not sure what this was for?
 
-
-r4ss::SSgetoutput(dirvec = c('test_posEKE', 'test_negEKE')) %>%
+### Below here code gets pretty sloppy and may not run ###
+r4ss::SSgetoutput(dirvec = c('test_posEKE', 'test_negEKE', 'inst/extdata/models/PacificHake')) %>%
    r4ss::SSsummarize() %>%
    r4ss::SSplotComparisons(subplots = 13, legendlabels = c('+EKE', '-EKE', '2021 Age1'))
 
