@@ -34,7 +34,9 @@ ROMS.plot %>%
   facet_wrap(~indicator, scales = 'free_x', nrow = 1) +
   labs(x = 'Environmental index', y = 'Recruitment deviation') +
   ggsidekick::theme_sleek(18) +
-  scale_x_continuous(n.breaks = 4)
+  scale_x_continuous(n.breaks = 4) +
+  fishualize::scale_color_fish(option = 'Ostracion_whitleyi')
+  #scale_color_gradientn(colors = calecopal('chaparral3',5))
 dev.off()
 
 ### Retrospectives looking at including env driver
@@ -116,11 +118,58 @@ r4ss::SS_doRetro(masterdir = here('test_negEKE'),
                  oldsubdir = '', 
                  years = -(10:15)
 )
-
-temp <- r4ss::SSgetoutput(dirvec = paste0(here('test_negEKE', 'retrospectives', 'retro'), -(10:15))) %>%
+ 
+temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', 'retro-15'),
+                                     here('test_negEKE', 'retrospectives', 'retro-15'),
+                                     here('inst/extdata/models/PacificHake')),
+                          forecast = FALSE) %>%
   r4ss::SSsummarize()
+
+rec.devs <- temp$recdevs
+names(rec.devs)[1:7] <- c(paste0('retro', 10:15), 'age1.2021')
+for(ii in 1:nrow(rec.devs)) {
+  for(jj in 1:6) {
+    if(rec.devs$Yr[ii] > 2020-(10:15)[jj]) {
+      rec.devs[ii,jj] <- NA
+    }
+  }
+}
+
+names(rec.devs)[1:3] <- c('Age 1 2006 retro', 'Env 2006 retro', '2021 Age 1')
+rec.devs[rec.devs$Yr > 2006, 1:2] <- NA
+plot.dat <- rec.devs %>%
+  tidyr::pivot_longer(cols = 1:3, names_to = 'model', values_to = 'rec.dev') %>%
+  dplyr::filter(!grepl('Early|Late|Fore', Label), 
+                Yr > 1990) %>%
+  dplyr::mutate(model = factor(model))
+
+big.plot <- plot.dat %>%
+  ggplot() +
+  geom_line(aes(x = Yr, y = rec.dev, col = model)) +
+ # geom_line(aes(x = Yr, y = age1.2021)) +
+  ggsidekick::theme_sleek(18) +
+  labs(x = 'Year', y = 'Recruitment deviation') +
+  geom_hline(yintercept = 0, col = 'red') +
+  scale_color_manual(values = inauguration::inauguration('inauguration_2021', 3), drop = FALSE)
+
+png('assess_skill.png', width = 11, height = 4.5, units = 'in', res = 2000)
+big.plot +
+  geom_point(aes(x = Yr, y = rec.dev, col = model), cex = 2,
+             data = dplyr::filter(plot.dat, Yr==2006))
+dev.off()
+
+png('assess_skill0.png', width = 11, height = 4.5, units = 'in', res = 2000)
+big.plot %+%
+  dplyr::filter(plot.dat, model == '2021 Age 1') +
+  geom_point(aes(x = Yr, y = rec.dev, col = model), cex = 2,
+             data = dplyr::filter(plot.dat, Yr == 2006, model == '2021 Age 1'))
+  
+dev.off()
 
 temp %>%
   r4ss::SSsummarize() %>%
   r4ss::SSplotRetroRecruits(cohorts = 2000:2010, endyrvec = 2020 - 10:15)
 
+
+
+qplot(x = year, y = bifurcation_index, geom = 'line', data = bifurcation)
