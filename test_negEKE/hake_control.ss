@@ -29,7 +29,7 @@
 #
 # setup for M, growth, maturity, fecundity, recruitment distibution, movement
 #
-0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate
+0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate;_5=Maunder_M;_6=Age-range_Lorenzen
 #_no additional input for selected M option; read 1P per morph
 1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_specific_K_incr; 4=age_specific_K_decr;5=age_specific_K_each; 6=NA; 7=NA; 8=growth cessation
 1 #_Age(post-settlement)_for_L1;linear growth below this
@@ -47,20 +47,20 @@
 #
 #_growth_parms
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env_var&link	dev_link	dev_minyr	dev_maxyr	dev_PH	Block	Block_Fxn
- 0.05000	 0.40000	 0.200000	-1.609440	 0.1	3	  4	0	0	0	0	0	0	0	#_NatM_p_1_Fem_GP_1      
- 2.00000	15.00000	 5.000000	32.000000	99.0	0	 -5	0	0	0	0	0	0	0	#_L_at_Amin_Fem_GP_1     
-45.00000	60.00000	53.200000	50.000000	99.0	0	 -3	0	0	0	0	0	0	0	#_L_at_Amax_Fem_GP_1     
- 0.20000	 0.40000	 0.300000	 0.300000	99.0	0	 -3	0	0	0	0	0	0	0	#_VonBert_K_Fem_GP_1     
- 0.03000	 0.16000	 0.066000	 0.100000	99.0	0	 -5	0	0	0	0	0	0	0	#_CV_young_Fem_GP_1      
- 0.03000	 0.16000	 0.062000	 0.100000	99.0	0	 -5	0	0	0	0	0	0	0	#_CV_old_Fem_GP_1        
--3.00000	 3.00000	 0.000007	 0.000007	99.0	0	-50	0	0	0	0	0	0	0	#_Wtlen_1_Fem_GP_1       
--3.00000	 3.00000	 2.962400	 2.962400	99.0	0	-50	0	0	0	0	0	0	0	#_Wtlen_2_Fem_GP_1       
--3.00000	43.00000	36.890000	36.890000	99.0	0	-50	0	0	0	0	0	0	0	#_Mat50%_Fem_GP_1        
--3.00000	 3.00000	-0.480000	-0.480000	99.0	0	-50	0	0	0	0	0	0	0	#_Mat_slope_Fem_GP_1     
--3.00000	 3.00000	 1.000000	 1.000000	99.0	0	-50	0	0	0	0	0	0	0	#_Eggs_intercept_Fem_GP_1
--3.00000	 3.00000	 0.000000	 0.000000	99.0	0	-50	0	0	0	0	0	0	0	#_Eggs_slope_wt_Fem_GP_1 
- 1.00000	 1.00000	 1.000000	 1.000000	 1.0	0	 -1	0	0	0	0	0	0	0	#_CohortGrowDev          
- 0.00001	 0.99999	 0.500000	 0.500000	 0.5	0	-99	0	0	0	0	0	0	0	#_FracFemale_GP_1        
+ 0.05	    0.4	   0.2	-1.60944	0.1	3	  4	0	0	0	0	0	0	0	#_NatM_p_1_Fem_GP_1      
+    2	     15	     5	      32	 99	0	 -5	0	0	0	0	0	0	0	#_L_at_Amin_Fem_GP_1     
+   45	     60	  53.2	      50	 99	0	 -3	0	0	0	0	0	0	0	#_L_at_Amax_Fem_GP_1     
+  0.2	    0.4	   0.3	     0.3	 99	0	 -3	0	0	0	0	0	0	0	#_VonBert_K_Fem_GP_1     
+ 0.03	   0.16	 0.066	     0.1	 99	0	 -5	0	0	0	0	0	0	0	#_CV_young_Fem_GP_1      
+ 0.03	   0.16	 0.062	     0.1	 99	0	 -5	0	0	0	0	0	0	0	#_CV_old_Fem_GP_1        
+   -3	      3	 7e-06	   7e-06	 99	0	-50	0	0	0	0	0	0	0	#_Wtlen_1_Fem_GP_1       
+   -3	      3	2.9624	  2.9624	 99	0	-50	0	0	0	0	0	0	0	#_Wtlen_2_Fem_GP_1       
+   -3	     43	 36.89	   36.89	 99	0	-50	0	0	0	0	0	0	0	#_Mat50%_Fem_GP_1        
+   -3	      3	 -0.48	   -0.48	 99	0	-50	0	0	0	0	0	0	0	#_Mat_slope_Fem_GP_1     
+   -3	      3	     1	       1	 99	0	-50	0	0	0	0	0	0	0	#_Eggs_intercept_Fem_GP_1
+   -3	      3	     0	       0	 99	0	-50	0	0	0	0	0	0	0	#_Eggs_slope_wt_Fem_GP_1 
+    1	      1	     1	       1	  1	0	 -1	0	0	0	0	0	0	0	#_CohortGrowDev          
+1e-05	0.99999	   0.5	     0.5	0.5	0	-99	0	0	0	0	0	0	0	#_FracFemale_GP_1        
 #_no timevary MG parameters
 #
 #_seasonal_effects_on_biology_parms
@@ -72,11 +72,11 @@
 0 # 0/1 to use steepness in initial equ recruitment calculation
 0 # future feature: 0/1 to make realized sigmaR a function of SR curvature
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn # parm_name
-13.0	17.0	15.90	15.000	99.000	0	  1	0	0	0	0	0	0	0	#_SR_LN(R0)  
- 0.2	 1.0	 0.88	 0.777	 0.113	2	  4	0	0	0	0	0	0	0	#_SR_BH_steep
- 1.0	 1.6	 1.40	 1.100	99.000	0	 -6	0	0	0	0	0	0	0	#_SR_sigmaR  
--5.0	 5.0	 0.00	 0.000	99.000	0	-50	0	0	0	0	0	0	0	#_SR_regime  
- 0.0	 2.0	 0.00	 1.000	99.000	0	-50	0	0	0	0	0	0	0	#_SR_autocorr
+ 13	 17	15.9	   15	   99	0	  1	0	0	0	0	0	0	0	#_SR_LN(R0)  
+0.2	  1	0.88	0.777	0.113	2	  4	0	0	0	0	0	0	0	#_SR_BH_steep
+  1	1.6	 1.4	  1.1	   99	0	 -6	0	0	0	0	0	0	0	#_SR_sigmaR  
+ -5	  5	   0	    0	   99	0	-50	0	0	0	0	0	0	0	#_SR_regime  
+  0	  2	   0	    1	   99	0	-50	0	0	0	0	0	0	0	#_SR_autocorr
 #_no timevary SR parameters
 2 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
 1970 # first year of main recr_devs; early devs can preceed this era
@@ -119,12 +119,12 @@
 -9999	0	0	0	0	0	#_terminator     
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
--15.00	15.0	-1.0376	0.0000	1.0	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Acoustic_Survey(2) 
-  0.05	 1.2	 0.0755	0.0755	0.1	0	 5	0	0	0	0	0	0	0	#_Q_extraSD_Acoustic_Survey(2)
--15.00	15.0	-1.0376	0.0000	1.0	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Age1_Survey(3)     
-  0.05	 1.2	 0.0755	0.0755	0.1	0	 5	0	0	0	0	0	0	0	#_Q_extraSD_Age1_Survey(3)    
--15.00	15.0	-1.0376	0.0000	1.0	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Acoustic_Survey(4) 
-  0.05	 1.2	 0.0755	0.0755	0.1	0	 5	0	0	0	0	0	0	0	#_Q_extraSD_Acoustic_Survey(4)
+ -15	 15	-1.0376	     0	  1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Acoustic_Survey(2) 
+0.05	1.2	 0.0755	0.0755	0.1	0	 5	0	0	0	0	0	0	0	#_Q_extraSD_Acoustic_Survey(2)
+ -15	 15	-1.0376	     0	  1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Age1_Survey(3)     
+0.05	1.2	 0.0755	0.0755	0.1	0	 5	0	0	0	0	0	0	0	#_Q_extraSD_Age1_Survey(3)    
+ -15	 15	-1.0376	     0	  1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Acoustic_Survey(4) 
+0.05	1.2	 0.0755	0.0755	0.1	0	 5	0	0	0	0	0	0	0	#_Q_extraSD_Acoustic_Survey(4)
 #_no timevary Q parameters
 #
 #_size_selex_patterns
@@ -144,65 +144,65 @@
 #_SizeSelex
 #_No size_selex_parm
 #_AgeSelex
--1002	3	-1000.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_1_Fishery(1)         
-   -1	1	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_2_Fishery(1)         
-   -5	9	    2.8	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_3_Fishery(1)         
-   -5	9	    0.1	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_4_Fishery(1)         
-   -5	9	    0.1	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_5_Fishery(1)         
-   -5	9	    0.1	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_6_Fishery(1)         
-   -5	9	    0.0	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_7_Fishery(1)         
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_8_Fishery(1)         
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_9_Fishery(1)         
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_10_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_11_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_12_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_13_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_14_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_15_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_16_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_17_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_18_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_19_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_20_Fishery(1)        
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_21_Fishery(1)        
--1002	3	-1000.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_1_Acoustic_Survey(2) 
--1002	3	-1000.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_2_Acoustic_Survey(2) 
-   -1	1	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_3_Acoustic_Survey(2) 
-   -5	9	    0.1	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_4_Acoustic_Survey(2) 
-   -5	9	    0.1	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_5_Acoustic_Survey(2) 
-   -5	9	    0.0	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_6_Acoustic_Survey(2) 
-   -5	9	    0.0	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_7_Acoustic_Survey(2) 
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_8_Acoustic_Survey(2) 
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_9_Acoustic_Survey(2) 
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_10_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_11_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_12_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_13_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_14_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_15_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_16_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_17_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_18_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_19_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_20_Acoustic_Survey(2)
-   -5	9	    0.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_21_Acoustic_Survey(2)
-    1	1	    1.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_1_Age1_Survey(3)     
-    1	1	    1.0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_2_Age1_Survey(3)     
+-1002	3	-1000	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_1_Fishery(1)         
+   -1	1	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_2_Fishery(1)         
+   -5	9	  2.8	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_3_Fishery(1)         
+   -5	9	  0.1	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_4_Fishery(1)         
+   -5	9	  0.1	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_5_Fishery(1)         
+   -5	9	  0.1	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_6_Fishery(1)         
+   -5	9	    0	-1	0.01	0	 2	0	2	1991	2020	5	0	0	#_AgeSel_P_7_Fishery(1)         
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_8_Fishery(1)         
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_9_Fishery(1)         
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_10_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_11_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_12_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_13_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_14_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_15_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_16_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_17_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_18_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_19_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_20_Fishery(1)        
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_21_Fishery(1)        
+-1002	3	-1000	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_1_Acoustic_Survey(2) 
+-1002	3	-1000	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_2_Acoustic_Survey(2) 
+   -1	1	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_3_Acoustic_Survey(2) 
+   -5	9	  0.1	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_4_Acoustic_Survey(2) 
+   -5	9	  0.1	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_5_Acoustic_Survey(2) 
+   -5	9	    0	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_6_Acoustic_Survey(2) 
+   -5	9	    0	-1	0.01	0	 2	0	0	   0	   0	0	0	0	#_AgeSel_P_7_Acoustic_Survey(2) 
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_8_Acoustic_Survey(2) 
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_9_Acoustic_Survey(2) 
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_10_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_11_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_12_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_13_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_14_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_15_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_16_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_17_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_18_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_19_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_20_Acoustic_Survey(2)
+   -5	9	    0	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_21_Acoustic_Survey(2)
+    1	1	    1	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_1_Age1_Survey(3)     
+    1	1	    1	-1	0.01	0	-2	0	0	   0	   0	0	0	0	#_AgeSel_P_2_Age1_Survey(3)     
 #_Dirichlet parameters
 -5	20	0.5	0	1.813	6	5	0	0	0	0	0	0	0	#_ln(DM_theta)_1
 -5	20	0.5	0	1.813	6	5	0	0	0	0	0	0	0	#_ln(DM_theta)_2
 # timevary selex parameters 
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE
- 0.0001	2.00	1.4	0.5	0.5	-1	-5	#_AgeSel_P_3_Fishery(1)_dev_se      
--0.9900	0.99	0.0	0.0	0.5	-1	-6	#_AgeSel_P_3_Fishery(1)_dev_autocorr
- 0.0001	2.00	1.4	0.5	0.5	-1	-5	#_AgeSel_P_4_Fishery(1)_dev_se      
--0.9900	0.99	0.0	0.0	0.5	-1	-6	#_AgeSel_P_4_Fishery(1)_dev_autocorr
- 0.0001	2.00	1.4	0.5	0.5	-1	-5	#_AgeSel_P_5_Fishery(1)_dev_se      
--0.9900	0.99	0.0	0.0	0.5	-1	-6	#_AgeSel_P_5_Fishery(1)_dev_autocorr
- 0.0001	2.00	1.4	0.5	0.5	-1	-5	#_AgeSel_P_6_Fishery(1)_dev_se      
--0.9900	0.99	0.0	0.0	0.5	-1	-6	#_AgeSel_P_6_Fishery(1)_dev_autocorr
- 0.0001	2.00	1.4	0.5	0.5	-1	-5	#_AgeSel_P_7_Fishery(1)_dev_se      
--0.9900	0.99	0.0	0.0	0.5	-1	-6	#_AgeSel_P_7_Fishery(1)_dev_autocorr
+1e-04	   2	1.4	0.5	0.5	-1	-5	#_AgeSel_P_3_Fishery(1)_dev_se      
+-0.99	0.99	  0	  0	0.5	-1	-6	#_AgeSel_P_3_Fishery(1)_dev_autocorr
+1e-04	   2	1.4	0.5	0.5	-1	-5	#_AgeSel_P_4_Fishery(1)_dev_se      
+-0.99	0.99	  0	  0	0.5	-1	-6	#_AgeSel_P_4_Fishery(1)_dev_autocorr
+1e-04	   2	1.4	0.5	0.5	-1	-5	#_AgeSel_P_5_Fishery(1)_dev_se      
+-0.99	0.99	  0	  0	0.5	-1	-6	#_AgeSel_P_5_Fishery(1)_dev_autocorr
+1e-04	   2	1.4	0.5	0.5	-1	-5	#_AgeSel_P_6_Fishery(1)_dev_se      
+-0.99	0.99	  0	  0	0.5	-1	-6	#_AgeSel_P_6_Fishery(1)_dev_autocorr
+1e-04	   2	1.4	0.5	0.5	-1	-5	#_AgeSel_P_7_Fishery(1)_dev_se      
+-0.99	0.99	  0	  0	0.5	-1	-6	#_AgeSel_P_7_Fishery(1)_dev_autocorr
 # info on dev vectors created for selex parms are reported with other devs after tag parameter section
 #
 0 #  use 2D_AR1 selectivity(0/1):  experimental feature
