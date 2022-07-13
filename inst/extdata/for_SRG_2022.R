@@ -5,6 +5,36 @@ library(ggplot2)
 ### Plot of environmental drivers vs. rec devs
 data(ROMS)
 ROMS <- dplyr::slice(ROMS, -1)
+
+# add fake environmental driver
+set.seed(1500)
+
+ROMS <- ROMS %>% dplyr::mutate(test = rnorm(nrow(ROMS)))
+
+simcor <- function (x, ymean=0, ysd=1, correlation=0) {
+  n <- length(x)
+  y <- rnorm(n)
+  z <- correlation * scale(x)[,1] + sqrt(1 - correlation^2) * 
+    scale(resid(lm(y ~ x)))[,1]
+  yresult <- ymean + ysd * z
+  yresult
+}
+
+rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
+
+# for (cor in c(0.25, 0.5, 0.75, 0.9)) {
+#   # generate correlated data
+#   rand <- simcor(rec.devs.sub$replist3, correlation = cor)
+#   ROMS <- as.data.frame(cbind(ROMS, rand))
+#   colnames(ROMS)[ncol(ROMS)] <- paste0("rand", cor)
+#   
+#   
+# }
+
+rand <- simcor(rec.devs.sub$replist3, correlation = 0.25)
+ROMS <- as.data.frame(cbind(ROMS, rand))
+colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
+
 temp <- r4ss::SSgetoutput(dirvec = here('inst/extdata/models/PacificHake'))
 bifurcation <- readr::read_csv(here('data-raw', 'bifurcation_index.csv'), comment = '#') %>%
   dplyr::mutate(year = year + 1) # bifurcation index impacts preconditioning phase, recruitment year - 1
@@ -16,9 +46,6 @@ ROMS.big <- dplyr::slice(ROMS, -1) %>%
                 `Eddy kinetic energy\nprecond.` = EKEpre.ms.c,
                 `Longshore transport yolk` = LSTyolk,
                 `Upwelling precond.` = UWpre.a)
-
-# add fake environmental driver
-ROMS <- ROMS %>% dplyr::mutate(test = rnorm(nrow(ROMS)))
 
 ROMS.plot <- ROMS.big %>%
   tidyr::pivot_longer(cols = -c('year', 'dev'), names_to = 'indicator', values_to = 'value') %>%
@@ -36,7 +63,7 @@ ROMS.plot %>%
             data = ROMS.cor) +
   facet_wrap(~indicator, scales = 'free_x', nrow = 1) +
   labs(x = 'Environmental index', y = 'Recruitment deviation') +
-  ggsidekick::theme_sleek() +
+  # ggsidekick::theme_sleek() +
   scale_x_continuous(n.breaks = 4) +
   fishualize::scale_color_fish(option = 'Ostracion_whitleyi')
   #scale_color_gradientn(colors = calecopal('chaparral3',5))
@@ -69,15 +96,15 @@ newlists <- add_fleet(
   data = data.frame(
     year = ROMS[["year"]],
     seas = 7,
-    obs = exp(ROMS$test),
+    obs = exp(-ROMS$test),
     se_log = 0.01
   ),
   fleetname = "env",
   fleettype = "CPUE", 
   units = 31
 )
-dirname <- 'test_negEKE'
-
+dirname <- 'test_rand'
+                  
 r4ss::copy_SS_inputs(
   dir.old = system.file("extdata", "models", "PacificHake",
                         package = "ss3roms"
@@ -114,22 +141,22 @@ r4ss::run_SS_models(dirvec = here('inst/extdata/models/PacificHake'),
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
   oldsubdir = 'PacificHake',
-  years = -(10:15)
+  years = -(5:15)
 )
 
-r4ss::SS_doRetro(masterdir = here('test_negEKE'),
+r4ss::SS_doRetro(masterdir = here('test_rand'),
                  oldsubdir = '', 
-                 years = -(10:15)
+                 years = -(5:15)
 )
  
-temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', 'retro-15'),
-                                     here('test_negEKE', 'retrospectives', 'retro-15'),
+temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', 'retro-5'),
+                                     here('test_rand', 'retrospectives', 'retro-5'),
                                      here('inst/extdata/models/PacificHake')),
                           forecast = FALSE) %>%
   r4ss::SSsummarize()
 
 rec.devs <- temp$recdevs
-#names(rec.devs)[1:6] <- c(paste0('retro', 10:15))
+# names(rec.devs)[1:6] <- c(paste0('retro', 10:15))
 # names(rec.devs)[7] <- 'age1.2021'
 # for(ii in 1:nrow(rec.devs)) {
 #   for(jj in 1:6) {
@@ -141,8 +168,12 @@ rec.devs <- temp$recdevs
 #   }
 # }
 
-names(rec.devs)[1:3] <- c('Age 1 2006 retro', 'Env 2006 retro', '2021 Age 1')
-rec.devs[rec.devs$Yr > 2006, 1:2] <- NA
+peel <- 5
+
+names(rec.devs)[1:3] <- c(paste('Age 1', 2021 - peel, 'retro'),
+                          paste('Env', 2021 - peel, 'retro'),
+                          '2021 Age 1')
+rec.devs[rec.devs$Yr > 2021-peel, 1:2] <- NA
 plot.dat <- rec.devs %>%
   tidyr::pivot_longer(cols = 1:3, names_to = 'model', values_to = 'rec.dev') %>%
   dplyr::filter(!grepl('Early|Late|Fore', Label), 
@@ -162,20 +193,20 @@ big.plot <- plot.dat %>%
 png('assess_skill.png', width = 11, height = 4.5, units = 'in', res = 2000)
 big.plot +
   geom_point(aes(x = Yr, y = rec.dev, col = model), cex = 2,
-             data = dplyr::filter(plot.dat, Yr==2006))
+             data = dplyr::filter(plot.dat, Yr==2021 - peel))
 dev.off()
 
 png('assess_skill0.png', width = 11, height = 4.5, units = 'in', res = 2000)
 big.plot %+%
   dplyr::filter(plot.dat, model == '2021 Age 1') +
   geom_point(aes(x = Yr, y = rec.dev, col = model), cex = 2,
-             data = dplyr::filter(plot.dat, Yr == 2006, model == '2021 Age 1'))
+             data = dplyr::filter(plot.dat, Yr == 2021 - peel, model == '2021 Age 1'))
   
 dev.off()
 
 temp %>%
   r4ss::SSsummarize() %>%
-  r4ss::SSplotRetroRecruits(cohorts = 2000:2010, endyrvec = 2020 - 10:15)
+  r4ss::SSplotRetroRecruits(cohorts = 2000:2005, endyrvec = 2021 - (5:15))
 
 
 

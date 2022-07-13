@@ -5,9 +5,9 @@
 #_User_info_available_at:https://vlab.noaa.gov/group/stock-synthesis
 #_Source_code_at:_https://github.com/nmfs-stock-synthesis/stock-synthesis
 
-StartTime: Mon Jun 27 14:41:02 2022
-EndTime: Mon Jun 27 14:42:20 2022
-This run took: 0 hours, 1 minutes, 18 seconds.
+StartTime: Wed Jun 29 14:43:28 2022
+EndTime: Wed Jun 29 14:45:40 2022
+This run took: 0 hours, 2 minutes, 12 seconds.
 Data_File: hake_data.SS
 Control_File: hake_control.SS
 
@@ -18,7 +18,7 @@ Starter_Comments
 #C starter file written by R function SS_writestarter
 #C rerun model to get more complete formatting in starter.ss_new
 #C should work with SS version: 3.30
-#C file write time: 2022-06-27 14:41:02
+#C file write time: 2022-06-29 14:43:27
 
 Data_Comments
 #C data file created using the SS_writedat function in the R package r4ss
