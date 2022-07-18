@@ -5,6 +5,24 @@ library(ggplot2)
 data(ROMS)
 ROMS <- dplyr::slice(ROMS, -1)
 
+dat <- r4ss::SS_readdat(
+  file = system.file(
+    "extdata", "models", "PacificHake", "hake_data.ss",
+    package = "ss3roms"
+  ),
+  verbose = FALSE
+)
+ctl <- r4ss::SS_readctl(
+  file = system.file(
+    "extdata", "models", "PacificHake", "hake_control.ss",
+    package = "ss3roms"
+  ),
+  use_datlist = TRUE,
+  datlist = dat,
+  verbose = FALSE,
+  version = 3.30
+)
+
 # --- get recruitment deviations from base model -------------------------------
 temp <- r4ss::SSgetoutput(dir = c(here('inst/extdata/models/PacificHake'),
                                   here('inst/extdata/models', 'retrospectives', 'retro-15')),
@@ -26,6 +44,21 @@ base.err <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
                   dplyr::pull(replist2) - base.rec.dev)
 
 
+# --- create folders -----------------------------------------------------------
+# naming convention: paste0('test_rand', <correlation index>, '-', <seed index>)
+# ex: 'test_rand1-4' correlation level #1, random seed #4
+create_folder <- function(dir.name) {
+    dir.create(here(dir.name))
+    
+    # copy ss.exe file
+    list.of.files <- list.files(here('inst/extdata/models', 'retrospectives', 'retro-15'),
+                                pattern = "ss.exe")
+    # file.create(here(dir.name, 'ss.exe'))
+    file.copy(from = here('inst/extdata/models', 'retrospectives', 'retro-15', list.of.files),
+              to = here(dir.name, list.of.files), overwrite = TRUE)
+}
+
+
 # --- create simulated random data ---------------------------------------------
 simcor <- function (x, ymean=0, ysd=1, correlation=0) {
   n <- length(x)
@@ -38,11 +71,11 @@ simcor <- function (x, ymean=0, ysd=1, correlation=0) {
 
 
 # --- fit retrospectives to correlated environmental data ----------------------
-sim_fit_retro <- function(i, corr, corr_ind){
-  s <- i*46
+sim_fit_retro <- function(seed.ind, corr, corr.ind){
+  s <- seed.ind*46
   set.seed(s)
   
-  ROMS <- ROMS %>% dplyr::mutate(rand = simcor(rec.devs.sub$replist3,
+  ROMS <- ROMS %>% dplyr::mutate(rand = simcor(rec.devs.sub$replist1,
                                                    correlation = corr))
   
   newlists <- add_fleet(
@@ -59,7 +92,8 @@ sim_fit_retro <- function(i, corr, corr_ind){
     units = 31
   )
   
-  dirname <- paste0('test_rand', corr_ind, '-', i)
+  dirname <- paste0('test_rand', corr.ind, '-', seed.ind)
+  create_folder(dirname)
   
   r4ss::copy_SS_inputs(
     dir.old = system.file("extdata", "models", "PacificHake",
@@ -91,7 +125,8 @@ sim_fit_retro <- function(i, corr, corr_ind){
   # fit retrospective
   r4ss::SS_doRetro(masterdir = here(dirname),
                    oldsubdir = '', 
-                   years = -peel
+                   years = -peel,
+                   extras = "-nohess"
   )
 }
 
@@ -101,15 +136,17 @@ future::plan("multisession", workers = 12)
   base.errs <- c()
   env.errs <- c()
   dirs <- c()
+  num.seed <- 12
   ind <- 1
+  
   for (corr in c(0.25, 0.5, 0.75, 0.9)) {
-    # 1:10 %>%
-    #   furrr::future_map(sim_fit_retro,
-    #                     corr = corr,
-    #                     corr_ind = ind,
-    #                     .options = furrr::furrr_options(seed = T))
+    1:num.seed %>%
+      furrr::future_map(sim_fit_retro,
+                        corr = corr,
+                        corr.ind = ind,
+                        .options = furrr::furrr_options(seed = T))
 
-    for(s in 1:10) {
+    for(s in 1:num.seed) {
       dirs[s] <- here(paste0('test_rand', ind, '-', s),
                       'retrospectives', 'retro-15')
     }
@@ -121,16 +158,17 @@ future::plan("multisession", workers = 12)
     rec.devs <- temp$recdevs
     
     # get environmentally-linked recruitment deviation errors
-    for(i in 1:10) {
-      env.errs[(ind - 1)*10 + i] <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
-                           dplyr::pull(paste0('replist', i)) - base.rec.dev)
+    for(s in 1:num.seed) {
+      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
+                           dplyr::pull(paste0('replist', s)) - base.rec.dev)
     }
     
     ind <- ind + 1
   }
+
   
 # --- plot errors --------------------------------------------------------------
-corrs <- rep(c(0.25,0.5,0.75,0.9), each = 10)
+corrs <- rep(c(0.25,0.5,0.75,0.9), each = num.seed)
 errs <- as.data.frame(cbind(env.errs, corrs))
 
 errs.plot <- ggplot(data = errs, aes(x = corrs, y = env.errs, group = corrs)) + 

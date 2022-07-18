@@ -22,15 +22,6 @@ simcor <- function (x, ymean=0, ysd=1, correlation=0) {
 
 rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
-# for (cor in c(0.25, 0.5, 0.75, 0.9)) {
-#   # generate correlated data
-#   rand <- simcor(rec.devs.sub$replist3, correlation = cor)
-#   ROMS <- as.data.frame(cbind(ROMS, rand))
-#   colnames(ROMS)[ncol(ROMS)] <- paste0("rand", cor)
-#   
-#   
-# }
-
 rand <- simcor(rec.devs.sub$replist3, correlation = 0.25)
 ROMS <- as.data.frame(cbind(ROMS, rand))
 colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
@@ -141,7 +132,8 @@ r4ss::run_SS_models(dirvec = here('inst/extdata/models/PacificHake'),
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
   oldsubdir = 'PacificHake',
-  years = -(5:15)
+  years = -15,
+  extras = '-nohess'
 )
 
 r4ss::SS_doRetro(masterdir = here('test_rand'),
