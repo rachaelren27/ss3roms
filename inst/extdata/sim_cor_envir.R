@@ -12,6 +12,7 @@ dat <- r4ss::SS_readdat(
   ),
   verbose = FALSE
 )
+
 ctl <- r4ss::SS_readctl(
   file = system.file(
     "extdata", "models", "PacificHake", "hake_control.ss",
@@ -136,7 +137,7 @@ future::plan("multisession", workers = 12)
   base.errs <- c()
   env.errs <- c()
   dirs <- c()
-  num.seed <- 12
+  num.seed <- 50
   ind <- 1
   
   for (corr in c(0.25, 0.5, 0.75, 0.9)) {
