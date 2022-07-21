@@ -4409,9 +4409,6 @@
 4409 wtatage not assigned for: time, morph, fleet, age: 2070 1 4 19
 4410 wtatage not assigned for: time, morph, fleet, age: 2070 1 4 20
 4411 Minimum pop size bin:_10; is > L at Amin for sex: 1; Gpat: 1; L= 5
-4412 Final gradient: 3139.65 is larger than final_conv: 1e-05
-4413  adjusted selparm out of base parm bounds. Phase: 5; Inter: 579; fleet: 5; base_parm#: 4; y: 1999; min: -5; max: 9; base: 0.611783 timevary_val: -6.67612  AgeSel_P4_Fishery(1)
-4414  adjusted selparm out of base parm bounds. Phase: 5; Inter: 579; fleet: 5; base_parm#: 4; y: 1999; min: -5; max: 9; base: 0.611783 timevary_val: -6.67612  AgeSel_P4_Fishery(1)
-4415  adjusted selparm out of base parm bounds. Phase: 5; Inter: 579; fleet: 5; base_parm#: 4; y: 1999; min: -5; max: 9; base: 0.611783 timevary_val: -6.67612  AgeSel_P4_Fishery(1)
-4416  adjusted selparm out of base parm bounds. Phase: 5; Inter: 579; fleet: 5; base_parm#: 4; y: 1999; min: -5; max: 9; base: 0.611783 timevary_val: -6.67612  AgeSel_P4_Fishery(1)
-N warnings: 4416
+4412 Final gradient: 0.37684 is larger than final_conv: 1e-05
+ N parameters are on or within 1% of min-max bound: 1; check results, variance may be suspect
+N warnings: 4412

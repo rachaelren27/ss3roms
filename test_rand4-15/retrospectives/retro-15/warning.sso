@@ -4409,6 +4409,6 @@
 4409 wtatage not assigned for: time, morph, fleet, age: 2070 1 4 19
 4410 wtatage not assigned for: time, morph, fleet, age: 2070 1 4 20
 4411 Minimum pop size bin:_10; is > L at Amin for sex: 1; Gpat: 1; L= 5
-4412 Final gradient: 4.67518e-05 is larger than final_conv: 1e-05
- N parameters are on or within 1% of min-max bound: 2; check results, variance may be suspect
+4412 Final gradient: 0.401113 is larger than final_conv: 1e-05
+ N parameters are on or within 1% of min-max bound: 1; check results, variance may be suspect
 N warnings: 4412

@@ -1,3 +1,9 @@
 Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitment | Forecast_Recruitment | Parm_priors | Parm_devs | Crash_Pen 
 ---- | Lambdas |  1 1 1 1 |  1 1 1 1 |  0 1 1 1 |  1 1 0 0 | 1 | 1 | 1 | 1 | 1
 0 | 1219.12 |  0.00790297 0 0 0 | 0 |  0 -2.66093 -0.896343 11.6726 |  1044.03 122.301 0 0 | 32.9887 | 1.14146 | 1.02729 | 9.50538 | 0
+Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitment | Forecast_Recruitment | Parm_priors | Parm_devs | Crash_Pen 
+---- | Lambdas |  1 1 1 1 |  1 1 1 1 |  0 1 1 1 |  1 1 0 0 | 1 | 1 | 1 | 1 | 1
+0 | 1219.14 |  0.00966838 0 0 0 | 0 |  0 -2.66051 -0.919179 11.7 |  1044.01 122.291 0 0 | 32.9965 | 1.18458 | 1.03666 | 9.49293 | 0
+Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitment | Forecast_Recruitment | Parm_priors | Parm_devs | Crash_Pen 
+---- | Lambdas |  1 1 1 1 |  1 1 1 1 |  0 1 1 1 |  1 1 0 0 | 1 | 1 | 1 | 1 | 1
+0 | 1219.12 |  0.00773707 0 0 0 | 0 |  0 -2.66055 -0.897346 11.6723 |  1044.02 122.303 0 0 | 32.986 | 1.14098 | 1.03164 | 9.50836 | 0

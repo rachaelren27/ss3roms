@@ -86,7 +86,7 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
       year = ROMS[["year"]],
       seas = 7,
       obs = exp(ROMS$rand),
-      se_log = 0.01
+      se_log = 0.25
     ),
     fleetname = "env",
     fleettype = "CPUE", 
@@ -176,4 +176,5 @@ errs.plot <- ggplot(data = errs, aes(x = corrs, y = env.errs, group = corrs)) +
   geom_boxplot() + 
   xlab("correlation") + 
   ylab("error") + 
-  geom_hline(yintercept = base.err, color = "red")
+  geom_hline(yintercept = base.err, color = "red") + 
+  ylim(0,2)
