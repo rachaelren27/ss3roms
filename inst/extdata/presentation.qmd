@@ -1,0 +1,175 @@
+---
+title: "Simulating Environmental Drivers for Hake Recruitment Deviation Predictions"
+author: "Rachael Ren, UW; Dr. Kiva Oken, NWFSC"
+format: revealjs
+editor: visual
+---
+
+## About Me
+
+-   Rising senior at the University of Washington majoring in Statistics, minoring in Environmental Studies
+
+. . .
+
+-   Applying to Statistics PhD programs this Winter
+
+. . .
+
+-   Leaning towards continuing this project during the school year (open to long-term suggestions)
+
+# Background/Motivation
+
+## Recruitment Deviations
+
+![Kapur 2021](beverton-holt.PNG){fig-align="center" width="329"}
+
+A **recruitment deviation** (rec dev) is a scaling factor indicating how far off our observed data is from the theoretical curve
+
+Hake recruitment is especially variable from year to year
+
+## Environmental Drivers
+
+We want to incorporate environmental drivers into hake recruitment deviation predictions
+
+"Our results suggest that the environment more strongly influences recruitment than spawning biomass over the observed stock sizes for many stocks." (Szuwalski)
+
+# Research Question
+
+**How correlated must an environmental driver be with past recruitment deviations to improve future recruitment deviation predictions?**
+
+. . .
+
+Hypothesis: As environmental drivers become increasingly correlated with recruitment deviations, predictions will become increasingly accurate.
+
+# Methods
+
+------------------------------------------------------------------------
+
+Three types of stock synthesis models:
+
+1.  **Base model with all years (1946 to 2019)**
+
+2.  Base retrospective model
+
+3.  Environmentally-linked retrospective model
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+assess.skill
+
+```
+
+------------------------------------------------------------------------
+
+Assessment of accuracy: absolute difference in the terminal year
+
+Which model is closer (has smaller absolute difference) to the "true" recruitment deviation in the terminal year?
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+assess.skill
+```
+
+------------------------------------------------------------------------
+
+1.  Simulate 50 fake environmental driver time series for each correlation level (0.25, 0.5, 0.75, 0.9)
+
+. . .
+
+2.  Run SS in MLE mode for:
+
+-   Base model with all years (1)
+
+-   Base model with 15 years peeled back (1)
+
+-   Environmentally-linked models with 15 years peeled back (50 time series x 4 levels = 200 total)
+
+. . .
+
+3.  Compare environmental errors with base error
+
+# Results
+
+------------------------------------------------------------------------
+
+![](SE1.PNG){fig-align="center" width="455"}
+
+------------------------------------------------------------------------
+
+Inputting exact recruitment deviations for the environmental driver:
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+recdevs0.01
+```
+
+------------------------------------------------------------------------
+
+If there is no age-0 catch, what is informing the base retrospective recruitment deviation in the terminal year?
+
+![](melpaper.PNG){fig-align="center" width="508"}
+
+![](melpaperkey.PNG){fig-align="center" width="248"}
+
+------------------------------------------------------------------------
+
+Three surveys used in the recruitment deviation likelihood estimation: Fishery, Acoustic, Age-1
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+basemodels
+```
+
+------------------------------------------------------------------------
+
+Only the age-1 survey is informing the recruitment deviation in the terminal year
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+noage1
+```
+
+------------------------------------------------------------------------
+
+Without the age-1 survey, inputting the rec devs for the environmental driver performs very well:
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+recdevs.noage1
+```
+
+## Discussion
+
+What is happening in the terminal year for retrospective models?
+
+```{r, eval = FALSE, echo = TRUE}
+r4ss::SS_doRetro(masterdir = here(dirname),
+                 oldsubdir = '', 
+                 years = -peel,
+                 extras = '-nohess'
+)
+```
+
+Is there a better way to assess accuracy?
+
+## Future explorations
+
+-   Using the model to estimate the added SE
+
+```{r, echo=FALSE, fig.align = 'center'}
+load('presentation.RData')
+
+recdevs0.1
+```
+
+. . .
+
+-   Simulate auto-correlated environmental drivers
+
+# 

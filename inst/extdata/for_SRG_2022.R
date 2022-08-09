@@ -20,11 +20,19 @@ simcor <- function (x, ymean=0, ysd=1, correlation=0) {
   yresult
 }
 
+temp <- r4ss::SSgetoutput(dir = here('inst/extdata/models/PacificHake'),
+                          forecast = FALSE) %>% 
+  r4ss::SSsummarize() 
+rec.devs <- temp$recdevs
 rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
-rand <- simcor(rec.devs.sub$replist3, correlation = 0.25)
+rand <- simcor(rec.devs.sub$replist1,
+               correlation = 0.4)
+
+rand <- rec.devs.sub$replist1
+
 ROMS <- as.data.frame(cbind(ROMS, rand))
-colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
+# colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
 
 temp <- r4ss::SSgetoutput(dirvec = here('inst/extdata/models/PacificHake'))
 bifurcation <- readr::read_csv(here('data-raw', 'bifurcation_index.csv'), comment = '#') %>%
@@ -70,6 +78,7 @@ dat <- r4ss::SS_readdat(
   ),
   verbose = FALSE
 )
+
 ctl <- r4ss::SS_readctl(
   file = system.file(
     "extdata", "models", "PacificHake", "hake_control.ss",
@@ -81,13 +90,14 @@ ctl <- r4ss::SS_readctl(
   version = 3.30
 )
 
+
 newlists <- add_fleet(
   datlist = dat,
   ctllist = ctl,
   data = data.frame(
     year = ROMS[["year"]],
     seas = 7,
-    obs = exp(-ROMS$test),
+    obs = exp(ROMS$rand),
     se_log = 0.01
   ),
   fleetname = "env",
@@ -129,20 +139,27 @@ r4ss::run_SS_models(dirvec = here('inst/extdata/models/PacificHake'),
                     model = here('inst/extdata/bin/Windows64/ss'))
 
 # Do retrospectives
+peel <- 15
+
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
   oldsubdir = 'PacificHake',
-  years = -15,
+  years = -peel,
   extras = '-nohess'
 )
 
-r4ss::SS_doRetro(masterdir = here('test_rand'),
+r4ss::SS_doRetro(masterdir = here(dirname),
                  oldsubdir = '', 
-                 years = -(5:15)
+                 years = -peel,
+                 extras = '-nohess'
 )
+
+# r4ss::run_SS_models(dirvec = here(dirname),
+#                     skipfinished = FALSE,
+#                     model = here('inst/extdata/bin/Windows64/ss'))
  
-temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', 'retro-5'),
-                                     here('test_rand', 'retrospectives', 'retro-5'),
+temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', paste0('retro-', peel)),
+                                     here(dirname, 'retrospectives', paste0('retro-', peel)),
                                      here('inst/extdata/models/PacificHake')),
                           forecast = FALSE) %>%
   r4ss::SSsummarize()
@@ -160,8 +177,6 @@ rec.devs <- temp$recdevs
 #   }
 # }
 
-peel <- 5
-
 names(rec.devs)[1:3] <- c(paste('Age 1', 2021 - peel, 'retro'),
                           paste('Env', 2021 - peel, 'retro'),
                           '2021 Age 1')
@@ -175,6 +190,7 @@ plot.dat <- rec.devs %>%
 big.plot <- plot.dat %>%
   ggplot() +
   geom_line(aes(x = Yr, y = rec.dev, col = model)) +
+  # scale_color_manual(values=c("#F8766D", "#00BA38")) + 
  # geom_line(aes(x = Yr, y = age1.2021)) +
   # ggsidekick::theme_sleek(18) +
   labs(x = 'Year', y = 'Recruitment deviation') +
@@ -182,11 +198,11 @@ big.plot <- plot.dat %>%
   # scale_color_manual(values = inauguration::inauguration('inauguration_2021', 3), drop = FALSE) +
   NULL
 
-png('assess_skill.png', width = 11, height = 4.5, units = 'in', res = 2000)
-big.plot +
+# png('assess_skill.png', width = 11, height = 4.5, units = 'in', res = 2000)
+assess.skill <- big.plot +
   geom_point(aes(x = Yr, y = rec.dev, col = model), cex = 2,
              data = dplyr::filter(plot.dat, Yr==2021 - peel))
-dev.off()
+# dev.off()
 
 png('assess_skill0.png', width = 11, height = 4.5, units = 'in', res = 2000)
 big.plot %+%
@@ -203,3 +219,5 @@ temp %>%
 
 
 qplot(x = year, y = bifurcation_index, geom = 'line', data = bifurcation)
+
+

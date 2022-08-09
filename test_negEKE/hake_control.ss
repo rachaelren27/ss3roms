@@ -29,7 +29,7 @@
 #
 # setup for M, growth, maturity, fecundity, recruitment distibution, movement
 #
-0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate;_5=Maunder_M;_6=Age-range_Lorenzen
+0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate
 #_no additional input for selected M option; read 1P per morph
 1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_specific_K_incr; 4=age_specific_K_decr;5=age_specific_K_each; 6=NA; 7=NA; 8=growth cessation
 1 #_Age(post-settlement)_for_L1;linear growth below this
@@ -215,10 +215,14 @@
 #_Factor Fleet Value
 -9999 1 0 # terminator
 #
-1 #_maxlambdaphase
+4 #_maxlambdaphase
 1 #_sd_offset; must be 1 if any growthCV, sigmaR, or survey extraSD is an estimated parameter
-# read 0 changes to default Lambdas (default value is 1.0)
--9999 0 0 0 0 # terminator
+# read 3 changes to default Lambdas (default value is 1.0)
+#_like_comp	fleet	phase	value	sizefreq_method
+   10	1	4	1	1	#_recrdev_Phz4_duplicate1
+   10	2	4	1	1	#_recrdev_Phz4_duplicate2
+   10	3	4	1	1	#_recrdev_Phz4           
+-9999	0	0	0	0	#_terminator             
 #
 1 # 0/1 read specs for more stddev reporting
 2 2 -1 15 # selex_fleet, 1=len/2=age/3=both, year, N selex bins

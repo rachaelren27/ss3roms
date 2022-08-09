@@ -1,7 +1,7 @@
 #C starter file written by R function SS_writestarter
 #C rerun model to get more complete formatting in starter.ss_new
 #C should work with SS version: 3.30
-#C file write time: 2022-07-20 15:49:13
+#C file write time: 2022-08-08 11:17:36
 #
 hake_data.SS #_datfile
 hake_control.SS #_ctlfile

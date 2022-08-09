@@ -30,18 +30,18 @@ temp <- r4ss::SSgetoutput(dir = c(here('inst/extdata/models/PacificHake'),
                           forecast = FALSE) %>% 
           r4ss::SSsummarize() 
 
-rec.devs <- temp$recdevs
-rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
+base.rec.devs <- temp$recdevs
+base.rec.devs.sub <- base.rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
 peel <- 15
 term.year <- 2021 - peel
 
 # base terminal year rec dev
-base.rec.dev <- rec.devs %>% dplyr::filter(Yr == term.year) %>%
+base.rec.dev <- base.rec.devs %>% dplyr::filter(Yr == term.year - 1) %>%
   dplyr::pull(replist1)
 
 # base retro terminal year rec dev
-base.err <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
+base.err <- abs(base.rec.devs %>% dplyr::filter(Yr == term.year - 1) %>%
                   dplyr::pull(replist2) - base.rec.dev)
 
 
@@ -60,8 +60,8 @@ create_folder <- function(dir.name) {
 }
 
 
-# --- create simulated random data ---------------------------------------------
-simcor <- function (x, ymean=0, ysd=1, correlation=0) {
+# --- generate simulated random data ---------------------------------------------
+simcor <- function (x, ymean=0, ysd=0.5, correlation=0) {
   n <- length(x)
   y <- rnorm(n)
   z <- correlation * scale(x)[,1] + sqrt(1 - correlation^2) *
@@ -76,9 +76,9 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
   s <- seed.ind*46
   set.seed(s)
   
-  ROMS <- ROMS %>% dplyr::mutate(rand = simcor(rec.devs.sub$replist1,
+  ROMS <- ROMS %>% dplyr::mutate(rand = simcor(base.rec.devs.sub$replist1,
                                                    correlation = corr))
-  
+
   newlists <- add_fleet(
     datlist = dat,
     ctllist = ctl,
@@ -86,16 +86,16 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
       year = ROMS[["year"]],
       seas = 7,
       obs = exp(ROMS$rand),
-      se_log = 0.25
+      se_log = 0.01
     ),
     fleetname = "env",
-    fleettype = "CPUE", 
+    fleettype = "CPUE",
     units = 31
   )
-  
+
   dirname <- paste0('test_rand', corr.ind, '-', seed.ind)
   create_folder(dirname)
-  
+
   r4ss::copy_SS_inputs(
     dir.old = system.file("extdata", "models", "PacificHake",
                           package = "ss3roms"
@@ -103,7 +103,7 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
     dir.new = file.path(here(dirname)),
     overwrite = TRUE
   )
-  
+
   r4ss::SS_writectl(
     ctllist = newlists[["ctllist"]],
     outfile = file.path(
@@ -122,17 +122,17 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
     overwrite = TRUE,
     verbose = FALSE
   )
-  
+
   # fit retrospective
   r4ss::SS_doRetro(masterdir = here(dirname),
-                   oldsubdir = '', 
+                   oldsubdir = '',
                    years = -peel,
                    extras = "-nohess"
   )
 }
 
 # --- calculate environmentally-linked errors ----------------------------------
-future::plan("multisession", workers = 12)
+future::plan("multisession", workers = 11)
 
   base.errs <- c()
   env.errs <- c()
@@ -140,7 +140,8 @@ future::plan("multisession", workers = 12)
   num.seed <- 50
   ind <- 1
   
-  for (corr in c(0.25, 0.5, 0.75, 0.9)) {
+
+  for (corr in c(0, 0.25, 0.5, 0.75, 0.9)) {
     1:num.seed %>%
       furrr::future_map(sim_fit_retro,
                         corr = corr,
@@ -151,16 +152,16 @@ future::plan("multisession", workers = 12)
       dirs[s] <- here(paste0('test_rand', ind, '-', s),
                       'retrospectives', 'retro-15')
     }
-  
+
     temp <- r4ss::SSgetoutput(dirvec = dirs,
                               forecast = FALSE) %>%
       r4ss::SSsummarize()
-    
+
     rec.devs <- temp$recdevs
-    
+
     # get environmentally-linked recruitment deviation errors
     for(s in 1:num.seed) {
-      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
+      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year - 1) %>%
                            dplyr::pull(paste0('replist', s)) - base.rec.dev)
     }
     
@@ -169,7 +170,7 @@ future::plan("multisession", workers = 12)
 
   
 # --- plot errors --------------------------------------------------------------
-corrs <- rep(c(0.25,0.5,0.75,0.9), each = num.seed)
+corrs <- rep(c(0, 0.25,0.5,0.75,0.9), each = num.seed)
 errs <- as.data.frame(cbind(env.errs, corrs))
 
 errs.plot <- ggplot(data = errs, aes(x = corrs, y = env.errs, group = corrs)) + 
