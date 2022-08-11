@@ -9,7 +9,7 @@ ROMS <- dplyr::slice(ROMS, -1)
 # add fake environmental driver
 set.seed(1500)
 
-ROMS <- ROMS %>% dplyr::mutate(test = rnorm(nrow(ROMS)))
+# ROMS <- ROMS %>% dplyr::mutate(test = rnorm(nrow(ROMS)))
 
 simcor <- function (x, ymean=0, ysd=1, correlation=0) {
   n <- length(x)
@@ -27,9 +27,9 @@ rec.devs <- temp$recdevs
 rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
 rand <- simcor(rec.devs.sub$replist1,
-               correlation = 0.4)
+               correlation = 0.5)
 
-rand <- rec.devs.sub$replist1
+# rand <- rec.devs.sub$replist1
 
 ROMS <- as.data.frame(cbind(ROMS, rand))
 # colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
@@ -167,11 +167,11 @@ temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives
 rec.devs <- temp$recdevs
 
 rec.devs.lower <- temp$recdevsLower
-rec.devs.lower[rec.devs.lower$Yr > 2021-peel, 2] <- NA
+rec.devs.lower[rec.devs.lower$Yr > 2020-peel, 2] <- NA
 lowerCI <- rec.devs.lower$replist2
   
 rec.devs.upper <- temp$recdevsUpper
-rec.devs.upper[rec.devs.upper$Yr > 2021-peel, 2] <- NA
+rec.devs.upper[rec.devs.upper$Yr > 2020-peel, 2] <- NA
 upperCI <- rec.devs.upper$replist2
 
 rec.devs <- cbind(rec.devs, lowerCI, upperCI)
@@ -189,10 +189,10 @@ rec.devs <- cbind(rec.devs, lowerCI, upperCI)
 #   }
 # }
 
-names(rec.devs)[1:3] <- c(paste('Age 1', 2021 - peel, 'retro'),
-                          paste('Env', 2021 - peel, 'retro'),
+names(rec.devs)[1:3] <- c(paste('Age 1', 2020 - peel, 'retro'),
+                          paste('Env', 2020 - peel, 'retro'),
                           '2021 Age 1')
-rec.devs[rec.devs$Yr > 2021-peel, 1:2] <- NA
+rec.devs[rec.devs$Yr > 2020-peel, 1:2] <- NA
 plot.dat <- rec.devs %>%
   tidyr::pivot_longer(cols = 1:3, names_to = 'model', values_to = 'rec.dev') %>%
   dplyr::filter(!grepl('Early|Late|Fore', Label), 

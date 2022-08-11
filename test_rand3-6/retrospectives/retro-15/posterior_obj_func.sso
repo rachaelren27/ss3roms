@@ -28,3 +28,6 @@ Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitmen
 Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitment | Forecast_Recruitment | Parm_priors | Parm_devs | Crash_Pen 
 ---- | Lambdas |  1 1 1 1 |  1 1 1 1 |  0 1 1 1 |  1 1 0 0 | 1 | 1 | 1 | 1 | 1
 0 | 1219.49 |  0.00454896 0 0 0 | 0 |  0 -2.60756 -1.32675 11.4672 |  1045.48 122.923 0 0 | 32.0399 | 0.962509 | 1.22052 | 9.32981 | 0
+Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitment | Forecast_Recruitment | Parm_priors | Parm_devs | Crash_Pen 
+---- | Lambdas |  1 1 1 1 |  1 1 1 1 |  0 1 1 1 |  1 1 0 0 | 1 | 1 | 1 | 1 | 1
+0 | 1220.07 |  0.00699563 0 0 0 | 0 |  0 -2.62935 -1.86113 11.9989 |  1044.5 122.634 0 0 | 34.4827 | 0.708545 | 0.822468 | 9.40473 | 0

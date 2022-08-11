@@ -34,14 +34,14 @@ base.rec.devs <- temp$recdevs
 base.rec.devs.sub <- base.rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
 peel <- 15
-term.year <- 2021 - peel
+term.year <- 2020 - peel
 
 # base terminal year rec dev
-base.rec.dev <- base.rec.devs %>% dplyr::filter(Yr == term.year - 1) %>%
+base.rec.dev <- base.rec.devs %>% dplyr::filter(Yr == term.year) %>%
   dplyr::pull(replist1)
 
 # base retro terminal year rec dev
-base.err <- abs(base.rec.devs %>% dplyr::filter(Yr == term.year - 1) %>%
+base.err <- abs(base.rec.devs %>% dplyr::filter(Yr == term.year) %>%
                   dplyr::pull(replist2) - base.rec.dev)
 
 
@@ -77,7 +77,9 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
   set.seed(s)
   
   ROMS <- ROMS %>% dplyr::mutate(rand = simcor(base.rec.devs.sub$replist1,
-                                                   correlation = corr))
+                                                   correlation = corr,
+                                               ymean = mean(base.rec.devs$replist1),
+                                               ysd = sd(base.rec.devs$replist1)))
 
   newlists <- add_fleet(
     datlist = dat,
@@ -161,7 +163,7 @@ future::plan("multisession", workers = 11)
 
     # get environmentally-linked recruitment deviation errors
     for(s in 1:num.seed) {
-      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year - 1) %>%
+      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
                            dplyr::pull(paste0('replist', s)) - base.rec.dev)
     }
     
