@@ -144,14 +144,14 @@ peel <- 15
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
   oldsubdir = 'PacificHake',
-  years = -peel,
-  extras = '-nohess'
+  years = -peel
+  # extras = '-nohess'
 )
 
 r4ss::SS_doRetro(masterdir = here(dirname),
                  oldsubdir = '', 
-                 years = -peel,
-                 extras = '-nohess'
+                 years = -peel
+                 #  extras = '-nohess'
 )
 
 # r4ss::run_SS_models(dirvec = here(dirname),
@@ -165,6 +165,18 @@ temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives
   r4ss::SSsummarize()
 
 rec.devs <- temp$recdevs
+
+rec.devs.lower <- temp$recdevsLower
+rec.devs.lower[rec.devs.lower$Yr > 2021-peel, 2] <- NA
+lowerCI <- rec.devs.lower$replist2
+  
+rec.devs.upper <- temp$recdevsUpper
+rec.devs.upper[rec.devs.upper$Yr > 2021-peel, 2] <- NA
+upperCI <- rec.devs.upper$replist2
+
+rec.devs <- cbind(rec.devs, lowerCI, upperCI)
+
+
 # names(rec.devs)[1:6] <- c(paste0('retro', 10:15))
 # names(rec.devs)[7] <- 'age1.2021'
 # for(ii in 1:nrow(rec.devs)) {
@@ -193,6 +205,11 @@ big.plot <- plot.dat %>%
   # scale_color_manual(values=c("#F8766D", "#00BA38")) + 
  # geom_line(aes(x = Yr, y = age1.2021)) +
   # ggsidekick::theme_sleek(18) +
+  geom_ribbon(aes(x = Yr,
+                  y = rec.dev,
+                  ymin = lowerCI,
+                  ymax = upperCI),
+              alpha = 0.1) + 
   labs(x = 'Year', y = 'Recruitment deviation') +
   geom_hline(yintercept = 0, col = 'red') +
   # scale_color_manual(values = inauguration::inauguration('inauguration_2021', 3), drop = FALSE) +
