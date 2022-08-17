@@ -135,8 +135,8 @@
 #_4:  0/1 for biasadj or not
 #_5:  0/1 to float
 #_   fleet      link link_info  extra_se   biasadj     float  #  fleetname
-         2         1         0         1         0         1  #  Acoustic_Survey
-         3         1         0         1         0         1  #  Age1_Survey
+         2         1         0         1         1         1  #  Acoustic_Survey
+         3         1         0         1         1         1  #  Age1_Survey
 -9999 0 0 0 0 0
 #
 #_Q_parms(if_any);Qunits_are_ln(q)

@@ -27,7 +27,9 @@ rec.devs <- temp$recdevs
 rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
 rand <- simcor(rec.devs.sub$replist1,
-               correlation = 0.5)
+               correlation = 0.6,
+               ymean = mean(rec.devs.sub$replist1),
+               ysd = sd(rec.devs.sub$replist1))
 
 # rand <- rec.devs.sub$replist1
 
@@ -98,7 +100,7 @@ newlists <- add_fleet(
     year = ROMS[["year"]],
     seas = 7,
     obs = exp(ROMS$rand),
-    se_log = 0.01
+    se_log = 0.1
   ),
   fleetname = "env",
   fleettype = "CPUE", 
@@ -144,19 +146,36 @@ peel <- 15
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
   oldsubdir = 'PacificHake',
-  years = -peel
+  years = -(10:15)
   # extras = '-nohess'
 )
 
 r4ss::SS_doRetro(masterdir = here(dirname),
                  oldsubdir = '', 
-                 years = -peel
+                 years = -(10:15)
                  #  extras = '-nohess'
 )
 
-# r4ss::run_SS_models(dirvec = here(dirname),
-#                     skipfinished = FALSE,
-#                     model = here('inst/extdata/bin/Windows64/ss'))
+# --- comparing retrospectives -------------------------------------------------
+# read in output
+retroModels <- r4ss::SSgetoutput(dirvec = here(dirname, "retrospectives",
+                                         paste0("retro-", 10:15)),
+                           forecast = FALSE) %>% 
+  r4ss::SSsummarize()
+
+# set the ending year of each model in the set
+endyrvec <- 2020 - (10:15)
+# make comparison plot
+compare_retro <- r4ss::SSplotComparisons(retroModels, endyrvec = endyrvec, new = FALSE)
+
+# make Squid Plot of recdev retrospectives
+par(mfrow = c(2, 1))
+# first scaled relative to most recent estimate
+scaled_squid <- r4ss::SSplotRetroRecruits(retroModels,
+                    endyrvec = endyrvec, cohorts = 2005:2010,
+                    relative = TRUE, legend = FALSE
+)
+
  
 temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', paste0('retro-', peel)),
                                      here(dirname, 'retrospectives', paste0('retro-', peel)),

@@ -86,7 +86,7 @@ For Kobe plot, set depletion_basis=2; depletion_level=1.0; F_reporting=your choo
 Read files in 3.30 format
 SS will continue reading from starter.ss until it reads 3.30
 read MCMC_output_detail.MCMC_bump as a single real number;  separate values will be parsed from integer and fraction
-MCMC output detail:  3
+MCMC output detail(1=more_detail_to_posts; 2=write_report_for_each_mceval):  0
 MCMC bump to R0:  0
 Now get ALK tolerance (0.0 is OK for no compression; 0.1 is too big;  suggest 0.0001)
 ALK tolerance:  0
@@ -240,41 +240,41 @@ Fleet Units Err_Type SD_Report
  2017 7 3 1.23804e+06 0.5
  2018 7 -3 1 1
  2019 7 3 733637 0.5
- 1981 7 4 0.299407 0.01
- 1982 7 4 0.777653 0.01
- 1983 7 4 1.56162 0.01
- 1984 7 4 45.9278 0.01
- 1985 7 4 0.00247883 0.01
- 1986 7 4 0.235414 0.01
- 1987 7 4 22.2273 0.01
- 1988 7 4 8.18407 0.01
- 1989 7 4 0.0024788 0.01
- 1990 7 4 15.2563 0.01
- 1991 7 4 5.05031 0.01
- 1992 7 4 0.0024789 0.01
- 1993 7 4 12.3087 0.01
- 1994 7 4 12.1859 0.01
- 1995 7 4 5.04067 0.01
- 1996 7 4 7.19452 0.01
- 1997 7 4 3.58443 0.01
- 1998 7 4 7.43025 0.01
- 1999 7 4 48.7083 0.01
- 2000 7 4 1.39411 0.01
- 2001 7 4 4.58106 0.01
- 2002 7 4 0.126967 0.01
- 2003 7 4 6.5374 0.01
- 2004 7 4 0.0891139 0.01
- 2005 7 4 10.3618 0.01
- 2006 7 4 8.02467 0.01
- 2007 7 4 0.00247875 0.01
- 2008 7 4 21.269 0.01
- 2009 7 4 5.53638 0.01
- 2010 7 4 59.2674 0.01
+ 1981 7 4 0.486913 0.1
+ 1982 7 4 0.58482 0.1
+ 1983 7 4 0.280133 0.1
+ 1984 7 4 9.42084 0.1
+ 1985 7 4 1.74812 0.1
+ 1986 7 4 0.0706434 0.1
+ 1987 7 4 6.99751 0.1
+ 1988 7 4 0.772521 0.1
+ 1989 7 4 0.410815 0.1
+ 1990 7 4 11.1774 0.1
+ 1991 7 4 1.459 0.1
+ 1992 7 4 3.07756 0.1
+ 1993 7 4 2.54659 0.1
+ 1994 7 4 1.2692 0.1
+ 1995 7 4 3.58494 0.1
+ 1996 7 4 0.169349 0.1
+ 1997 7 4 10.6846 0.1
+ 1998 7 4 0.89482 0.1
+ 1999 7 4 43.4153 0.1
+ 2000 7 4 0.124006 0.1
+ 2001 7 4 0.175064 0.1
+ 2002 7 4 0.109593 0.1
+ 2003 7 4 0.864045 0.1
+ 2004 7 4 1.405 0.1
+ 2005 7 4 5.44209 0.1
+ 2006 7 4 3.97751 0.1
+ 2007 7 4 0.0562516 0.1
+ 2008 7 4 12.2711 0.1
+ 2009 7 4 0.200708 0.1
+ 2010 7 4 0.85078 0.1
 Successful read of survey data; total N:  80
 Index Survey_name       N   Super_Per    Min_val   max_val  //  Observations:
 2    Acoustic_Survey   25     0      861744 2.13753e+06 //  1.31804e+06 1 1 1.56915e+06 1 1 861744 1 2.13753e+06 1 1.3761e+06 1 942721 1 1.50227e+06 1 674617 1.27942e+06 1.92924e+06 1 2.15585e+06 1 1.41781e+06 1 1.72261e+06
 3    Age1_Survey   25     0      8651.67 3.39634e+06 //  231940 1 1 107000 1 1 1 1 24266.6 1 8651.67 1 1.02909e+06 1 3.39634e+06 1 5.94867e+06 64440.7 421580 1 4.66507e+06 1 1.23804e+06 1 733637
-4    env   30     0      0.00247875 48.7083 //  0.299407 0.777653 1.56162 45.9278 0.00247883 0.235414 22.2273 8.18407 0.0024788 15.2563 5.05031 0.0024789 12.3087 12.1859 5.04067 7.19452 3.58443 7.43025 48.7083 1.39411 4.58106 0.126967 6.5374 0.0891139 10.3618 8.02467 0.00247875 21.269 5.53638 59.2674
+4    env   30     0      0.0562516 43.4153 //  0.486913 0.58482 0.280133 9.42084 1.74812 0.0706434 6.99751 0.772521 0.410815 11.1774 1.459 3.07756 2.54659 1.2692 3.58494 0.169349 10.6846 0.89482 43.4153 0.124006 0.175064 0.109593 0.864045 1.405 5.44209 3.97751 0.0562516 12.2711 0.200708 0.85078
 Number of sdreport index values: 0
  note order of discard read is now: N fleets with disc, then if Ndisc_fleets>0 read:  fleet, disc_units, disc_error(for 1,Ndisc_fleets), then read obs 
 0 N fleets with discard 
@@ -456,7 +456,8 @@ Successful processing of age data
 0 N_envvar 
 0 N sizefreq methods to read 
  finished processing sizefreq data 
-0 Do_TagData(0/1) 
+0 Do_TagData(0/1/2) 
+#  where 2 indicates additional read of TG_min_recap
 0 Do_Morphcomp(0/1) 
 Do dataread for selectivity priors(0/1):  0
 Yr  Seas Fleet  Age/Size  Bin  selex_prior  prior_sd
@@ -465,8 +466,9 @@ feature not yet implemented
 
 read Do_Benchmark(0=skip; 1= do Fspr, Fbtgt, Fmsy; 2=do Fspr, F0.1, Fmsy;  3=Fspr, Fbtgt, Fmsy, F_Blimit)
 1 echoed Do_Benchmark 
-read Do_MSY (1=F_SPR,2=F_Btarget,3=calcMSY,4=mult*F_endyr (disabled);5=calcMEY)
+read Do_MSY basis (1=F_SPR,2=calcMSY,3=F_Btarget,4=mult*F_endyr (disabled);5=calcMEY with MSY_unit options
 2 echoed Do_MSY basis
+Note that Do_MSY=5 is more flexible than Do_MSY=2 by providing control of MSY_units
 next read SPR target and Biomass target as fractions
 0.4 echoed SPR_target 
 0.4 echoed B_target 
@@ -514,7 +516,7 @@ next read 4 values for:  control rule shape(0, 1, 2, 3 or 4), inflection (like 0
 #next enter 0, or stddev of implementation error
 0 # echoed value
 
-#next select rebuilding program output (0/1)
+#next select rebuilding program output: 0=no; 1=yes
 0 # echoed value
 
 #next select rebuilding program:  year declared overfished
@@ -961,15 +963,11 @@ Recalc_flag_for_age_selex_recalc_by_year
  read var_adjust list until -9999
  -9999 1 0
  number of variance adjustment records = 0
-4 max_lambda_phase 
+1 max_lambda_phase 
 1 sd_offset (adds log(s)); needed if variance parameters are estimated 
  read lambda changes list until -9999
- number of lambda change records = 3
-3 N lambda changes 
- lambda changes 
- 10 1 4 1 1
- 10 2 4 1 1
- 10 3 4 0 1
+ number of lambda change records = 0
+0 N lambda changes 
 1 # extra stdev reporting: 0 = skip, 1 = read specs for reporting stdev for selectivity, size, and numbers, 2 = add option for M, dyn. Bzero & Smrybio 
 inpt_as_read:  2 2 -1 15 0 0 1 -1 1
  2 2 -1 15 # Selectivity: (1) 0 to skip or fleet, (2) 1=len/2=age/3=combined, (3) year, (4) N selex bins; NOTE: combined reports in age bins
@@ -1607,15 +1605,6 @@ wtlen2
  0.00851373 0.0139651 0.0213379 0.0309158 0.0429811 0.057815 0.0756973 0.0969071 0.121722 0.15042 0.183277 0.220569 0.26257 0.309556 0.361799 0.419574 0.483153 0.552809 0.628812 0.711434 0.800947 0.897621 1.00172 1.11353 1.2333 1.36132 1.49784 1.64313 1.79747 1.96112 2.13435
 wtlen2^2  7.24836e-05 0.000195024 0.000455304 0.000955784 0.00184738 0.00334257 0.00573009 0.00939098 0.0148163 0.0226262 0.0335905 0.0486505 0.068943 0.0958247 0.130899 0.176043 0.233437 0.305597 0.395404 0.506139 0.641517 0.805723 1.00345 1.23995 1.52104 1.85318 2.24351 2.69988 3.2309 3.846 4.55545
 wtlen2:firstdiff  0.00459758 0.0063765 0.00843996 0.0107864 0.0134146 0.0163232 0.0195112 0.0229778 0.0267219 0.0307428 0.0350398 0.0396122 0.0444593 0.0495805 0.0549752 0.0606429 0.0665831 0.0727953 0.0792791 0.0860339 0.0930593 0.100355 0.107921 0.115756 0.12386 0.132233 0.140874 0.149784 0.158961 0.168406
-fecundity option: 1 parms:  1 0
-maturity option: 5 parms:  36.89 -0.48
-gp: 1 g 1
-mat_len:  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- fec_len:  0.00851373 0.0139651 0.0213379 0.0309158 0.0429811 0.057815 0.0756973 0.0969071 0.121722 0.15042 0.183277 0.220569 0.26257 0.309556 0.361799 0.419574 0.483153 0.552809 0.628812 0.711434 0.800947 0.897621 1.00172 1.11353 1.2333 1.36132 1.49784 1.64313 1.79747 1.96112 2.13435
- mat_fec_len:  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- mat_age:  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- mat_len_age:  0 0 0.0672075 0.321589 0.466566 0.489992 0.53991 0.605419 0.68081 0.73396 0.826826 0.889465 0.9645 1.01673 0.956815 0.93132 0.93132 0.93132 0.93132 0.93132 0.93132
- fecundity_age:  0 0 0.0672075 0.321589 0.466566 0.489992 0.53991 0.605419 0.68081 0.73396 0.826826 0.889465 0.9645 1.01673 0.956815 0.93132 0.93132 0.93132 0.93132 0.93132 0.93132
 ready to do natmort 
 Natmort seas:1 sex:1 Gpat:1 sex*Gpat:1 settlement:1 gpi:1
  M:  0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2
@@ -1671,15 +1660,6 @@ sex: 1 GP: 1 Lmin: 5 Linf: 53.3618 VBK_temp: -0.3 VBK@age:  0.3
   L@A initial_year (w/o lin):  -11.9198 5 17.5345 26.8203 33.6994 38.7955 42.5708 plusgroup: 53.2
   adjusted size at maxage 53.234  using decay of: -999
   seas: 1  size@t+1:   -11.9198 7.5 17.5345 26.8203 33.6994 38.7955 42.5708 plusgroup: 53.234
-fecundity option: 1 parms:  1 0
-maturity option: 5 parms:  36.89 -0.48
-gp: 1 g 1
-mat_len:  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- fec_len:  0.00851373 0.0139651 0.0213379 0.0309158 0.0429811 0.057815 0.0756973 0.0969071 0.121722 0.15042 0.183277 0.220569 0.26257 0.309556 0.361799 0.419574 0.483153 0.552809 0.628812 0.711434 0.800947 0.897621 1.00172 1.11353 1.2333 1.36132 1.49784 1.64313 1.79747 1.96112 2.13435
- mat_fec_len:  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- mat_age:  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- mat_len_age:  0 0 0.0804924 0.364126 0.473773 0.479136 0.512089 0.537487 0.566582 0.591114 0.645428 0.68985 0.6857 0.789871 0.940732 0.959832 0.959832 0.959832 0.959832 0.959832 0.959832
- fecundity_age:  0 0 0.0804924 0.364126 0.473773 0.479136 0.512089 0.537487 0.566582 0.591114 0.645428 0.68985 0.6857 0.789871 0.940732 0.959832 0.959832 0.959832 0.959832 0.959832 0.959832
 Natmort seas:1 sex:1 Gpat:1 sex*Gpat:1 settlement:1 gpi:1
  M:  0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2
 yr 1975, seas: 1, fleet:1

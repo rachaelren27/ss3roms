@@ -1,16 +1,16 @@
-#V3.30.xx.yy;_safe;_compile_date:_Dec  8 2021;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.3
+#V3.30.19.01;_safe;_compile_date:_Apr 15 2022;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.3
 #_Stock_Synthesis_is_a_work_of_the_U.S._Government_and_is_not_subject_to_copyright_protection_in_the_United_States.
 #_Foreign_copyrights_may_apply._See_copyright.txt_for_more_information.
 #_User_support_available_at:NMFS.Stock.Synthesis@noaa.gov
 #_User_info_available_at:https://vlab.noaa.gov/group/stock-synthesis
 #_Source_code_at:_https://github.com/nmfs-stock-synthesis/stock-synthesis
 
-#_Start_time: Wed Jun 29 14:48:22 2022
+#_Start_time: Tue Aug 16 15:57:07 2022
 #_echo_input_data
 #C data file created using the SS_writedat function in the R package r4ss
 #C should work with SS version:
 #C file write time: 2020-01-13 10:57:32
-#V3.30.xx.yy;_safe;_compile_date:_Dec  8 2021;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.3
+#V3.30.19.01;_safe;_compile_date:_Apr 15 2022;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.3
 1966 #_StartYr
 2020 #_EndYr
 1 #_Nseas
@@ -161,36 +161,36 @@
 2017 7 -3 1.23804e+06 0.5 #_ Age1_Survey
 2018 7 -3 1 1 #_ Age1_Survey
 2019 7 -3 733637 0.5 #_ Age1_Survey
-1981 7 4 0.729144 0.01 #_ env
-1982 7 4 0.661956 0.01 #_ env
-1983 7 4 1.63912 0.01 #_ env
-1984 7 4 1.3005 0.01 #_ env
-1985 7 4 0.194243 0.01 #_ env
-1986 7 4 2.26381 0.01 #_ env
-1987 7 4 0.972566 0.01 #_ env
-1988 7 4 2.20036 0.01 #_ env
-1989 7 4 0.575252 0.01 #_ env
-1990 7 4 0.542903 0.01 #_ env
-1991 7 4 1.02227 0.01 #_ env
-1992 7 4 0.147821 0.01 #_ env
-1993 7 4 1.29281 0.01 #_ env
-1994 7 4 2.11918 0.01 #_ env
-1995 7 4 0.57057 0.01 #_ env
-1996 7 4 6.02781 0.01 #_ env
-1997 7 4 0.215783 0.01 #_ env
-1998 7 4 1.97062 0.01 #_ env
-1999 7 4 0.474114 0.01 #_ env
-2000 7 4 2.61097 0.01 #_ env
-2001 7 4 4.3303 0.01 #_ env
-2002 7 4 0.735067 0.01 #_ env
-2003 7 4 1.7979 0.01 #_ env
-2004 7 4 0.115975 0.01 #_ env
-2005 7 4 0.694333 0.01 #_ env
-2006 7 4 0.728464 0.01 #_ env
-2007 7 4 0.786609 0.01 #_ env
-2008 7 -4 0.6445 0.01 #_ env
-2009 7 -4 4.59935 0.01 #_ env
-2010 7 -4 8.22813 0.01 #_ env
+1981 7 4 0.486913 0.1 #_ env
+1982 7 4 0.58482 0.1 #_ env
+1983 7 4 0.280133 0.1 #_ env
+1984 7 4 9.42084 0.1 #_ env
+1985 7 4 1.74812 0.1 #_ env
+1986 7 4 0.0706434 0.1 #_ env
+1987 7 4 6.99751 0.1 #_ env
+1988 7 4 0.772521 0.1 #_ env
+1989 7 4 0.410815 0.1 #_ env
+1990 7 4 11.1774 0.1 #_ env
+1991 7 4 1.459 0.1 #_ env
+1992 7 4 3.07756 0.1 #_ env
+1993 7 4 2.54659 0.1 #_ env
+1994 7 4 1.2692 0.1 #_ env
+1995 7 4 3.58494 0.1 #_ env
+1996 7 4 0.169349 0.1 #_ env
+1997 7 4 10.6846 0.1 #_ env
+1998 7 4 0.89482 0.1 #_ env
+1999 7 4 43.4153 0.1 #_ env
+2000 7 4 0.124006 0.1 #_ env
+2001 7 4 0.175064 0.1 #_ env
+2002 7 4 0.109593 0.1 #_ env
+2003 7 4 0.864045 0.1 #_ env
+2004 7 4 1.405 0.1 #_ env
+2005 7 4 5.44209 0.1 #_ env
+2006 7 4 3.97751 0.1 #_ env
+2007 7 4 0.0562516 0.1 #_ env
+2008 7 -4 12.2711 0.1 #_ env
+2009 7 -4 0.200708 0.1 #_ env
+2010 7 -4 0.85078 0.1 #_ env
 -9999 1 1 1 1 # terminator for survey observations 
 #
 0 #_N_fleets_with_discard
@@ -417,8 +417,8 @@
 #Yr Variable Value
 #
 0 # N sizefreq methods to read 
-#
-0 # do tags (0/1)
+# 
+0 # do tags (0/1/2); where 2 allows entry of TG_min_recap
 #
 0 #    morphcomp data(0/1) 
 #  Nobs, Nmorphs, mincomp

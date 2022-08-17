@@ -88,7 +88,7 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
       year = ROMS[["year"]],
       seas = 7,
       obs = exp(ROMS$rand),
-      se_log = 0.01
+      se_log = 0.05
     ),
     fleetname = "env",
     fleettype = "CPUE",
@@ -138,17 +138,18 @@ future::plan("multisession", workers = 11)
 
   base.errs <- c()
   env.errs <- c()
+  avg.se <- c()
   dirs <- c()
   num.seed <- 50
   ind <- 1
   
 
   for (corr in c(0, 0.25, 0.5, 0.75, 0.9)) {
-    1:num.seed %>%
-      furrr::future_map(sim_fit_retro,
-                        corr = corr,
-                        corr.ind = ind,
-                        .options = furrr::furrr_options(seed = T))
+    # 1:num.seed %>%
+    #   furrr::future_map(sim_fit_retro,
+    #                     corr = corr,
+    #                     corr.ind = ind,
+    #                     .options = furrr::furrr_options(seed = T))
 
     for(s in 1:num.seed) {
       dirs[s] <- here(paste0('test_rand', ind, '-', s),
@@ -160,11 +161,14 @@ future::plan("multisession", workers = 11)
       r4ss::SSsummarize()
 
     rec.devs <- temp$recdevs
+    added.se <- temp$indices %>% dplyr::filter(Fleet == 4 & Yr == 2005)
 
-    # get environmentally-linked recruitment deviation errors
+    # get environmentally-linked recruitment deviation errors and avg se
     for(s in 1:num.seed) {
-      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
-                           dplyr::pull(paste0('replist', s)) - base.rec.dev)
+      env.errs[(ind - 1)*num.seed + s] <- rec.devs %>% dplyr::filter(Yr == term.year) %>%
+                           dplyr::pull(paste0('replist', s)) - base.rec.dev
+      
+      avg.se[ind] <- mean(added.se$SE - added.se$SE_input)
     }
     
     ind <- ind + 1
@@ -176,8 +180,7 @@ corrs <- rep(c(0, 0.25,0.5,0.75,0.9), each = num.seed)
 errs <- as.data.frame(cbind(env.errs, corrs))
 
 errs.plot <- ggplot(data = errs, aes(x = corrs, y = env.errs, group = corrs)) + 
-  geom_boxplot() + 
+  geom_violin() +
   xlab("correlation") + 
   ylab("error") + 
-  geom_hline(yintercept = base.err, color = "red") + 
-  ylim(0,2)
+  geom_hline(yintercept = base.err*-1, color = "red")
