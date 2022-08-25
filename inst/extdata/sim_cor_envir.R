@@ -165,8 +165,8 @@ future::plan("multisession", workers = 11)
 
     # get environmentally-linked recruitment deviation errors and avg se
     for(s in 1:num.seed) {
-      env.errs[(ind - 1)*num.seed + s] <- rec.devs %>% dplyr::filter(Yr == term.year) %>%
-                           dplyr::pull(paste0('replist', s)) - base.rec.dev
+      env.errs[(ind - 1)*num.seed + s] <- abs(rec.devs %>% dplyr::filter(Yr == term.year) %>%
+                           dplyr::pull(paste0('replist', s)) - base.rec.dev)
       
       avg.se[ind] <- mean(added.se$SE - added.se$SE_input)
     }
@@ -180,7 +180,8 @@ corrs <- rep(c(0, 0.25,0.5,0.75,0.9), each = num.seed)
 errs <- as.data.frame(cbind(env.errs, corrs))
 
 errs.plot <- ggplot(data = errs, aes(x = corrs, y = env.errs, group = corrs)) + 
-  geom_violin() +
+  geom_boxplot() +
   xlab("correlation") + 
-  ylab("error") + 
-  geom_hline(yintercept = base.err*-1, color = "red")
+  ylab("absolute error") + 
+  ylim(0,2) +
+  geom_hline(yintercept = base.err, color = "red")

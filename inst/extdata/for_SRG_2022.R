@@ -24,10 +24,11 @@ temp <- r4ss::SSgetoutput(dir = here('inst/extdata/models/PacificHake'),
                           forecast = FALSE) %>% 
   r4ss::SSsummarize() 
 rec.devs <- temp$recdevs
+
 rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
 rand <- simcor(rec.devs.sub$replist1,
-               correlation = 0.6,
+               correlation = 0.9,
                ymean = mean(rec.devs.sub$replist1),
                ysd = sd(rec.devs.sub$replist1))
 
@@ -100,7 +101,7 @@ newlists <- add_fleet(
     year = ROMS[["year"]],
     seas = 7,
     obs = exp(ROMS$rand),
-    se_log = 0.1
+    se_log = 0.01
   ),
   fleetname = "env",
   fleettype = "CPUE", 
@@ -146,40 +147,40 @@ peel <- 15
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
   oldsubdir = 'PacificHake',
-  years = -(10:15)
+  years = -peel
   # extras = '-nohess'
 )
 
 r4ss::SS_doRetro(masterdir = here(dirname),
                  oldsubdir = '', 
-                 years = -(10:15)
+                 years = -peel
                  #  extras = '-nohess'
 )
 
-# --- comparing retrospectives -------------------------------------------------
-# read in output
-retroModels <- r4ss::SSgetoutput(dirvec = here(dirname, "retrospectives",
-                                         paste0("retro-", 10:15)),
-                           forecast = FALSE) %>% 
-  r4ss::SSsummarize()
-
-# set the ending year of each model in the set
-endyrvec <- 2020 - (10:15)
-# make comparison plot
-compare_retro <- r4ss::SSplotComparisons(retroModels, endyrvec = endyrvec, new = FALSE)
-
-# make Squid Plot of recdev retrospectives
-par(mfrow = c(2, 1))
-# first scaled relative to most recent estimate
-scaled_squid <- r4ss::SSplotRetroRecruits(retroModels,
-                    endyrvec = endyrvec, cohorts = 2005:2010,
-                    relative = TRUE, legend = FALSE
-)
+# # --- comparing retrospectives -------------------------------------------------
+# # read in output
+# retroModels <- r4ss::SSgetoutput(dirvec = here(dirname, "retrospectives",
+#                                          paste0("retro-", 10:15)),
+#                            forecast = FALSE) %>% 
+#   r4ss::SSsummarize()
+# 
+# # set the ending year of each model in the set
+# endyrvec <- 2020 - (10:15)
+# # make comparison plot
+# compare_retro <- r4ss::SSplotComparisons(retroModels, endyrvec = endyrvec, new = FALSE)
+# 
+# # make Squid Plot of recdev retrospectives
+# par(mfrow = c(2, 1))
+# # first scaled relative to most recent estimate
+# scaled_squid <- r4ss::SSplotRetroRecruits(retroModels,
+#                     endyrvec = endyrvec, cohorts = 2005:2010,
+#                     relative = TRUE, legend = FALSE
+# )
 
  
 temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', paste0('retro-', peel)),
-                                     here(dirname, 'retrospectives', paste0('retro-', peel)),
-                                     here('inst/extdata/models/PacificHake')),
+                                   here(dirname, 'retrospectives', paste0('retro-', peel)),
+                                   here('inst/extdata/models/PacificHake')),
                           forecast = FALSE) %>%
   r4ss::SSsummarize()
 
@@ -210,34 +211,40 @@ rec.devs <- cbind(rec.devs, lowerCI, upperCI)
 
 names(rec.devs)[1:3] <- c(paste('Age 1', 2020 - peel, 'retro'),
                           paste('Env', 2020 - peel, 'retro'),
-                          '2021 Age 1')
+                          '2020 Age 1')
+# names(rec.devs)[1] <- paste('Age 1', 2020 - peel, 'retro')
 rec.devs[rec.devs$Yr > 2020-peel, 1:2] <- NA
 plot.dat <- rec.devs %>%
   tidyr::pivot_longer(cols = 1:3, names_to = 'model', values_to = 'rec.dev') %>%
-  dplyr::filter(!grepl('Early|Late|Fore', Label), 
-                Yr > 1990) %>%
+  dplyr::filter(
+                Yr > 1990 & Yr < 2021) %>%
   dplyr::mutate(model = factor(model))
+
+# plot.dat <- plot.dat %>% dplyr::filter(model != '2020 Age 1')
 
 big.plot <- plot.dat %>%
   ggplot() +
+  ylim(-4, 4) + 
   geom_line(aes(x = Yr, y = rec.dev, col = model)) +
-  # scale_color_manual(values=c("#F8766D", "#00BA38")) + 
- # geom_line(aes(x = Yr, y = age1.2021)) +
+  # scale_color_manual(values=c("#00BA38","#619CFF")) + 
+  # geom_line(aes(x = Yr, y = age1.2021)) +
   # ggsidekick::theme_sleek(18) +
-  geom_ribbon(aes(x = Yr,
-                  y = rec.dev,
-                  ymin = lowerCI,
-                  ymax = upperCI),
-              alpha = 0.1) + 
+  # geom_ribbon(aes(x = Yr,
+  #                 y = rec.dev,
+  #                 ymin = lowerCI,
+  #                 ymax = upperCI),
+  #             alpha = 0.1) + 
   labs(x = 'Year', y = 'Recruitment deviation') +
   geom_hline(yintercept = 0, col = 'red') +
   # scale_color_manual(values = inauguration::inauguration('inauguration_2021', 3), drop = FALSE) +
   NULL
 
+
+
 # png('assess_skill.png', width = 11, height = 4.5, units = 'in', res = 2000)
 assess.skill <- big.plot +
   geom_point(aes(x = Yr, y = rec.dev, col = model), cex = 2,
-             data = dplyr::filter(plot.dat, Yr==2021 - peel))
+             data = dplyr::filter(plot.dat, Yr==2020 - peel))
 # dev.off()
 
 png('assess_skill0.png', width = 11, height = 4.5, units = 'in', res = 2000)
