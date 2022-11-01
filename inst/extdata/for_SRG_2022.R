@@ -20,10 +20,12 @@ simcor <- function (x, ymean=0, ysd=1, correlation=0) {
   yresult
 }
 
-temp <- r4ss::SSgetoutput(dir = here('inst/extdata/models/PacificHake'),
+temp <- r4ss::SSgetoutput(dir = here('inst/extdata/models/PetraleSole'),
                           forecast = FALSE) %>% 
   r4ss::SSsummarize() 
 rec.devs <- temp$recdevs
+
+
 
 rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
@@ -37,7 +39,7 @@ rand <- simcor(rec.devs.sub$replist1,
 ROMS <- as.data.frame(cbind(ROMS, rand))
 # colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
 
-temp <- r4ss::SSgetoutput(dirvec = here('inst/extdata/models/PacificHake'))
+temp <- r4ss::SSgetoutput(dirvec = here('inst/extdata/models/PetraleSole'))
 bifurcation <- readr::read_csv(here('data-raw', 'bifurcation_index.csv'), comment = '#') %>%
   dplyr::mutate(year = year + 1) # bifurcation index impacts preconditioning phase, recruitment year - 1
 ROMS.big <- dplyr::slice(ROMS, -1) %>%
@@ -74,19 +76,16 @@ dev.off()
 ### Retrospectives looking at including env driver
 
 # Adjust control and data files
-dat <- r4ss::SS_readdat(
+dat <- r4ss::SS_readdat_3.24(
   file = system.file(
-    "extdata", "models", "PacificHake", "hake_data.ss",
+    "extdata", "models", "PetraleSole", "petrale15.dat",
     package = "ss3roms"
   ),
   verbose = FALSE
 )
 
-ctl <- r4ss::SS_readctl(
-  file = system.file(
-    "extdata", "models", "PacificHake", "hake_control.ss",
-    package = "ss3roms"
-  ),
+ctl <- r4ss::SS_readctl_3.24(
+  file = here("inst", "extdata", "models", "PetraleSole", "petrale15.ctl"),
   use_datlist = TRUE,
   datlist = dat,
   verbose = FALSE,
@@ -110,7 +109,7 @@ newlists <- add_fleet(
 dirname <- 'test_rand'
                   
 r4ss::copy_SS_inputs(
-  dir.old = system.file("extdata", "models", "PacificHake",
+  dir.old = system.file("extdata", "models", "PetraleSole",
                         package = "ss3roms"
   ),
   dir.new = file.path(here(dirname)),
@@ -137,18 +136,19 @@ r4ss::SS_writedat(
 )
 
 # Run SS in MLE mode
-r4ss::run_SS_models(dirvec = here('inst/extdata/models/PacificHake'), 
+r4ss::run_SS_models(dirvec = here('inst/extdata/models/PetraleSole'), 
                     skipfinished = FALSE, 
-                    model = here('inst/extdata/bin/Windows64/ss'))
+                    model = here('inst/extdata/bin/Windows64/ss3'))
 
 # Do retrospectives
 peel <- 15
 
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
-  oldsubdir = 'PacificHake',
-  years = -peel
-  # extras = '-nohess'
+  oldsubdir = 'PetraleSole',
+  newsubdir = "ps_retrospectives",
+  years = -peel,
+  extras = '-nohess'
 )
 
 r4ss::SS_doRetro(masterdir = here(dirname),
@@ -180,7 +180,7 @@ r4ss::SS_doRetro(masterdir = here(dirname),
  
 temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', paste0('retro-', peel)),
                                    here(dirname, 'retrospectives', paste0('retro-', peel)),
-                                   here('inst/extdata/models/PacificHake')),
+                                   here('inst/extdata/models/PetraleSole')),
                           forecast = FALSE) %>%
   r4ss::SSsummarize()
 

@@ -1,0 +1,3 @@
+Iter | Objective_function | Catch | Equil_catch | Survey | Age_comp | Recruitment | Forecast_Recruitment | Parm_priors | Parm_devs | Crash_Pen 
+---- | Lambdas |  1 1 1 1 |  1 1 1 1 |  0 1 1 1 |  1 1 0 0 | 1 | 1 | 1 | 1 | 1
+0 | 1259.49 |  0.0107671 0 0 0 | 0 |  0 -2.46937 -1.38347 9.8116 |  1084.09 122.325 0 0 | 34.2113 | 0.837589 | 1.30983 | 10.7401 | 0
