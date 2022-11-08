@@ -20,24 +20,17 @@ simcor <- function (x, ymean=0, ysd=1, correlation=0) {
   yresult
 }
 
-temp <- r4ss::SSgetoutput(dir = here('inst/extdata/models/PetraleSole'),
+temp <- r4ss::SSgetoutput(dir = here('inst/extdata/models/Sablefish'),
                           forecast = FALSE) %>% 
   r4ss::SSsummarize() 
 rec.devs <- temp$recdevs
 
-
-
-rec.devs.sub <- rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
-
-rand <- simcor(rec.devs.sub$replist1,
-               correlation = 0.9,
-               ymean = mean(rec.devs.sub$replist1),
-               ysd = sd(rec.devs.sub$replist1))
+rand <- simcor(rec.devs$replist1,
+               correlation = 0.25,
+               ymean = mean(rec.devs$replist1),
+               ysd = sd(rec.devs$replist1))
 
 # rand <- rec.devs.sub$replist1
-
-ROMS <- as.data.frame(cbind(ROMS, rand))
-# colnames(ROMS)[ncol(ROMS)] <- paste0("rand", 0.25)
 
 temp <- r4ss::SSgetoutput(dirvec = here('inst/extdata/models/PetraleSole'))
 bifurcation <- readr::read_csv(here('data-raw', 'bifurcation_index.csv'), comment = '#') %>%
@@ -76,30 +69,25 @@ dev.off()
 ### Retrospectives looking at including env driver
 
 # Adjust control and data files
-dat <- r4ss::SS_readdat_3.24(
-  file = system.file(
-    "extdata", "models", "PetraleSole", "petrale15.dat",
-    package = "ss3roms"
-  ),
+dat <- r4ss::SS_readdat(
+  file = here("inst", "extdata", "models", "Sablefish", "data.ss"),
   verbose = FALSE
 )
 
-ctl <- r4ss::SS_readctl_3.24(
-  file = here("inst", "extdata", "models", "PetraleSole", "petrale15.ctl"),
+ctl <- r4ss::SS_readctl(
+  file = here("inst", "extdata", "models", "Sablefish", "control.ss"),
   use_datlist = TRUE,
   datlist = dat,
   verbose = FALSE,
-  version = 3.30
 )
-
 
 newlists <- add_fleet(
   datlist = dat,
   ctllist = ctl,
   data = data.frame(
-    year = ROMS[["year"]],
+    year = rec.devs$Yr,
     seas = 7,
-    obs = exp(ROMS$rand),
+    obs = exp(rand),
     se_log = 0.01
   ),
   fleetname = "env",
@@ -109,9 +97,7 @@ newlists <- add_fleet(
 dirname <- 'test_rand'
                   
 r4ss::copy_SS_inputs(
-  dir.old = system.file("extdata", "models", "PetraleSole",
-                        package = "ss3roms"
-  ),
+  dir.old = here("inst", "extdata", "models", "Sablefish"),
   dir.new = file.path(here(dirname)),
   overwrite = TRUE
 )
@@ -136,25 +122,26 @@ r4ss::SS_writedat(
 )
 
 # Run SS in MLE mode
-r4ss::run_SS_models(dirvec = here('inst/extdata/models/PetraleSole'), 
+r4ss::run_SS_models(dirvec = here('inst/extdata/models/Sablefish'), 
                     skipfinished = FALSE, 
-                    model = here('inst/extdata/bin/Windows64/ss3'))
+                    model = here('inst/extdata/models/Sablefish/ss'))
 
 # Do retrospectives
 peel <- 15
 
 r4ss::SS_doRetro(
   masterdir = here('inst/extdata/models'),
-  oldsubdir = 'PetraleSole',
-  newsubdir = "ps_retrospectives",
+  oldsubdir = 'Sablefish',
+  newsubdir = "s_retrospectives",
   years = -peel,
   extras = '-nohess'
 )
 
 r4ss::SS_doRetro(masterdir = here(dirname),
                  oldsubdir = '', 
-                 years = -peel
-                 #  extras = '-nohess'
+                 years = -peel,
+                 newsubdir = "s_retrospectives",
+                 extras = '-nohess'
 )
 
 # # --- comparing retrospectives -------------------------------------------------
@@ -178,23 +165,24 @@ r4ss::SS_doRetro(masterdir = here(dirname),
 # )
 
  
-temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 'retrospectives', paste0('retro-', peel)),
-                                   here(dirname, 'retrospectives', paste0('retro-', peel)),
-                                   here('inst/extdata/models/PetraleSole')),
+temp <- r4ss::SSgetoutput(dirvec = c(here('inst/extdata/models', 's_retrospectives', paste0('retro-', peel)),
+                                     here(dirname, 's_retrospectives', paste0('retro-', peel)),
+                                   here('inst/extdata/models/Sablefish')),
                           forecast = FALSE) %>%
   r4ss::SSsummarize()
 
 rec.devs <- temp$recdevs
 
-rec.devs.lower <- temp$recdevsLower
-rec.devs.lower[rec.devs.lower$Yr > 2020-peel, 2] <- NA
-lowerCI <- rec.devs.lower$replist2
-  
-rec.devs.upper <- temp$recdevsUpper
-rec.devs.upper[rec.devs.upper$Yr > 2020-peel, 2] <- NA
-upperCI <- rec.devs.upper$replist2
-
-rec.devs <- cbind(rec.devs, lowerCI, upperCI)
+# --- calculate CI -------------------------------------------------------------
+# rec.devs.lower <- temp$recdevsLower
+# rec.devs.lower[rec.devs.lower$Yr > 2015-peel, 2] <- NA
+# lowerCI <- rec.devs.lower$replist2
+#   
+# rec.devs.upper <- temp$recdevsUpper
+# rec.devs.upper[rec.devs.upper$Yr > 2015-peel, 2] <- NA
+# upperCI <- rec.devs.upper$replist2
+# 
+# rec.devs <- cbind(rec.devs, lowerCI, upperCI)
 
 
 # names(rec.devs)[1:6] <- c(paste0('retro', 10:15))
@@ -209,6 +197,7 @@ rec.devs <- cbind(rec.devs, lowerCI, upperCI)
 #   }
 # }
 
+# --- plot rec devs ------------------------------------------------------------
 names(rec.devs)[1:3] <- c(paste('Age 1', 2020 - peel, 'retro'),
                           paste('Env', 2020 - peel, 'retro'),
                           '2020 Age 1')
@@ -217,7 +206,7 @@ rec.devs[rec.devs$Yr > 2020-peel, 1:2] <- NA
 plot.dat <- rec.devs %>%
   tidyr::pivot_longer(cols = 1:3, names_to = 'model', values_to = 'rec.dev') %>%
   dplyr::filter(
-                Yr > 1990 & Yr < 2021) %>%
+                Yr > 1990 & Yr <= 2020) %>%
   dplyr::mutate(model = factor(model))
 
 # plot.dat <- plot.dat %>% dplyr::filter(model != '2020 Age 1')

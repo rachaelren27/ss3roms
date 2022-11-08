@@ -14,10 +14,10 @@
 #_Cond 1.0 # first age that moves (real age at begin of season, not integer) also cond on do_migration>0
 #_Cond 1 1 1 2 4 10 # example move definition for seas=1, morph=1, source=1 dest=2, age1=4, age2=10
 
-1 #_Nblock_Patterns
-3 #_blocks_per_pattern
+3 #_Nblock_Patterns
+3 0 0 #_blocks_per_pattern
 # begin and end years of blocks
-1973 1982 1983 1992 1993 2014 # For selectivities of all fleets
+1973 1982 1983 1992 1993 1999 # For selectivities of all fleets
 
 0.5 #_fracfemale
 0   #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate

@@ -1,0 +1,651 @@
+#V3.24U
+#C 2015 Assessent of Petrale (Fish600 people) run with SS3.24O
+#_data_and_control_files: petrale15.dat // petrale15.ctl
+#_SS-V3.24U-fast;_08/29/2014;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2_Win64
+1  #_N_Growth_Patterns
+1 #_N_Morphs_Within_GrowthPattern 
+#_Cond 1 #_Morph_between/within_stdev_ratio (no read if N_morphs=1)
+#_Cond  1 #vector_Morphdist_(-1_in_first_val_gives_normal_approx)
+#
+#_Cond 0  #  N recruitment designs goes here if N_GP*nseas*area>1
+#_Cond 0  #  placeholder for recruitment interaction request
+#_Cond 1 1 1  # example recruitment design element for GP=1, seas=1, area=1
+#
+#_Cond 0 # N_movement_definitions goes here if N_areas > 1
+#_Cond 1.0 # first age that moves (real age at begin of season, not integer) also cond on do_migration>0
+#_Cond 1 1 1 2 4 10 # example move definition for seas=1, morph=1, source=1 dest=2, age1=4, age2=10
+#
+3 #_Nblock_Patterns
+ 5 3 3 #_blocks_per_pattern 
+# begin and end years of blocks
+ 1973 1982 1983 1992 1993 2002 2003 2010 2011 2014
+ 2003 2009 2010 2010 2011 2014
+ 2003 2008 2009 2010 2011 2014
+#
+0.5 #_fracfemale 
+0 #_natM_type:_0=1Parm; 1=N_breakpoints;_2=Lorenzen;_3=agespecific;_4=agespec_withseasinterpolate
+  #_no additional input for selected M option; read 1P per morph
+1 # GrowthModel: 1=vonBert with L1&L2; 2=Richards with L1&L2; 3=age_speciific_K; 4=not implemented
+2 #_Growth_Age_for_L1
+17 #_Growth_Age_for_L2 (999 to use as Linf)
+0 #_SD_add_to_LAA (set to 0.1 for SS2 V1.x compatibility)
+0 #_CV_Growth_Pattern:  0 CV=f(LAA); 1 CV=F(A); 2 SD=F(LAA); 3 SD=F(A); 4 logSD=F(A)
+1 #_maturity_option:  1=length logistic; 2=age logistic; 3=read age-maturity by GP; 4=read age-fecundity by GP; 5=read fec and wt from wtatage.ss; 6=read length-maturity by GP
+#_placeholder for empirical age- or length- maturity by growth pattern (female only)
+3 #_First_Mature_Age
+1 #_fecundity option:(1)eggs=Wt*(a+b*Wt);(2)eggs=a*L^b;(3)eggs=a*Wt^b; (4)eggs=a+b*L; (5)eggs=a+b*W
+0 #_hermaphroditism option:  0=none; 1=age-specific fxn
+1 #_parameter_offset_approach (1=none, 2= M, G, CV_G as offset from female-GP1, 3=like SS2 V1.x)
+1 #_env/block/dev_adjust_method (1=standard; 2=logistic transform keeps in base parm bounds; 3=standard w/ no bound check)
+#
+#_growth_parms
+#_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
+ 0.005 0.5 0.154771 -1.888 3 0.3333 6 0 0 0 0 0.5 0 0 # NatM_p_1_Fem_GP_1
+ 10 45 15.6497 17.18 -1 10 2 0 0 0 0 0.5 0 0 # L_at_Amin_Fem_GP_1
+ 35 80 54.4943 58.7 -1 10 3 0 0 0 0 0.5 0 0 # L_at_Amax_Fem_GP_1
+ 0.04 0.5 0.133891 0.13 -1 0.8 2 0 0 0 0 0.5 0 0 # VonBert_K_Fem_GP_1
+ 0.01 1 0.18716 3 -1 0.8 3 0 0 0 0 0.5 0 0 # CV_young_Fem_GP_1
+ 0.01 1 0.0256046 0 -1 1 4 0 0 0 0 0 0 0 # CV_old_Fem_GP_1
+ 0.005 0.6 0.164164 -1.58 3 0.3326 6 0 0 0 0 0.5 0 0 # NatM_p_1_Mal_GP_1
+ 10 45 16.3826 17.18 -1 10 2 0 0 0 0 0.5 0 0 # L_at_Amin_Mal_GP_1
+ 35 80 43.2169 58.7 -1 10 3 0 0 0 0 0.5 0 0 # L_at_Amax_Mal_GP_1
+ 0.04 0.5 0.205546 0.13 -1 0.8 2 0 0 0 0 0.5 0 0 # VonBert_K_Mal_GP_1
+ 0.01 1 0.134081 3 -1 0.8 3 0 0 0 0 0.5 0 0 # CV_young_Mal_GP_1
+ 0.01 1 0.0490702 0 -1 1 4 0 0 0 0 0 0 0 # CV_old_Mal_GP_1
+ -3 3 2.08296e-006 2.08296e-006 0 0.8 -3 0 0 0 0 0.5 0 0 # Wtlen_1_Fem
+ 1 5 3.4737 3.4737 0 0.8 -3 0 0 0 0 0.5 0 0 # Wtlen_2_Fem
+ 10 50 33.1 33.1 0 0.8 -3 0 0 0 0 0.5 0 0 # Mat50%_Fem
+ -3 3 -0.743 -0.743 0 0.8 -3 0 0 0 0 0.5 0 0 # Mat_slope_Fem
+ -3 3 1 1 0 1 -3 0 0 0 0 0.5 0 0 # Eggs/kg_inter_Fem
+ -3 3 0 0 0 1 -3 0 0 0 0 0.5 0 0 # Eggs/kg_slope_wt_Fem
+ -3 3 3.05e-006 3.05e-006 0 0.8 -3 0 0 0 0 0.5 0 0 # Wtlen_1_Mal
+ -3 5 3.36054 3.36054 0 0.8 -3 0 0 0 0 0.5 0 0 # Wtlen_2_Mal
+ 0 1 1 0.2 0 9.8 -3 0 0 0 0 0.5 0 0 # RecrDist_GP_1
+ 0 1 1 1 0 9.8 -3 0 0 0 0 0.5 0 0 # RecrDist_Area_1
+ -4 4 0 1 0 9.8 -3 0 0 0 0 0.5 0 0 # RecrDist_Seas_1
+ 0 1 1 1 -1 0 -4 0 0 0 0 0 0 0 # CohortGrowDev
+#
+#_Cond 0  #custom_MG-env_setup (0/1)
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no MG-environ parameters
+#
+#_Cond 0  #custom_MG-block_setup (0/1)
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no MG-block parameters
+#_Cond No MG parm trends 
+#
+#_seasonal_effects_on_biology_parms
+ 0 0 0 0 0 0 0 0 0 0 #_femwtlen1,femwtlen2,mat1,mat2,fec1,fec2,Malewtlen1,malewtlen2,L1,K
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no seasonal MG parameters
+#
+#_Cond -4 #_MGparm_Dev_Phase
+#
+#_Spawner-Recruitment
+3 #_SR_function: 2=Ricker; 3=std_B-H; 4=SCAA; 5=Hockey; 6=B-H_flattop; 7=survival_3Parm; 8=Shepard_3Parm
+#_LO HI INIT PRIOR PR_type SD PHASE
+ 5 20 9.74438 9 -1 10 1 # SR_LN(R0)
+ 0.2 1 0.860215 0.8 0 0.09 5 # SR_BH_steep
+ 0 2 0.4 0.9 0 5 -99 # SR_sigmaR
+ -5 5 0 0 0 1 -99 # SR_envlink
+ -5 5 0 0 0 0.2 -2 # SR_R1_offset
+ 0 0 0 0 -1 0 -99 # SR_autocorr
+0 #_SR_env_link
+0 #_SR_env_target_0=none;1=devs;_2=R0;_3=steepness
+1 #do_recdev:  0=none; 1=devvector; 2=simple deviations
+1959 # first year of main recr_devs; early devs can preceed this era
+2012 # last year of main recr_devs; forecast devs start in following year
+1 #_recdev phase 
+1 # (0/1) to read 13 advanced options
+ 1845 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
+ 3 #_recdev_early_phase
+ 0 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
+ 1 #_lambda for Fcast_recr_like occurring before endyr+1
+ 1944 #_last_early_yr_nobias_adj_in_MPD
+ 1964 #_first_yr_fullbias_adj_in_MPD
+ 2011 #_last_yr_fullbias_adj_in_MPD
+ 2014 #_first_recent_yr_nobias_adj_in_MPD
+ 0.8 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
+ 0 #_period of cycles in recruitment (N parms read below)
+ -4 #min rec_dev
+ 4 #max rec_dev
+ 0 #_read_recdevs
+#_end of advanced SR options
+#
+#_placeholder for full parameter lines for recruitment cycles
+# read specified recr devs
+#_Yr Input_value
+#
+# all recruitment deviations
+#DisplayOnly 5.70464e-007 # Early_InitAge_31
+#DisplayOnly 6.60782e-007 # Early_InitAge_30
+#DisplayOnly 7.80622e-007 # Early_InitAge_29
+#DisplayOnly 8.99721e-007 # Early_InitAge_28
+#DisplayOnly 1.06801e-006 # Early_InitAge_27
+#DisplayOnly 1.22767e-006 # Early_InitAge_26
+#DisplayOnly 1.44055e-006 # Early_InitAge_25
+#DisplayOnly 1.69529e-006 # Early_InitAge_24
+#DisplayOnly 1.94452e-006 # Early_InitAge_23
+#DisplayOnly 2.26753e-006 # Early_InitAge_22
+#DisplayOnly 2.65588e-006 # Early_InitAge_21
+#DisplayOnly 3.07873e-006 # Early_InitAge_20
+#DisplayOnly 3.57706e-006 # Early_InitAge_19
+#DisplayOnly 4.14662e-006 # Early_InitAge_18
+#DisplayOnly 4.8181e-006 # Early_InitAge_17
+#DisplayOnly 5.58464e-006 # Early_InitAge_16
+#DisplayOnly 6.45583e-006 # Early_InitAge_15
+#DisplayOnly 7.48006e-006 # Early_InitAge_14
+#DisplayOnly 8.63407e-006 # Early_InitAge_13
+#DisplayOnly 9.96094e-006 # Early_InitAge_12
+#DisplayOnly 1.14949e-005 # Early_InitAge_11
+#DisplayOnly 1.32255e-005 # Early_InitAge_10
+#DisplayOnly 1.51989e-005 # Early_InitAge_9
+#DisplayOnly 1.74264e-005 # Early_InitAge_8
+#DisplayOnly 1.99539e-005 # Early_InitAge_7
+#DisplayOnly 2.27884e-005 # Early_InitAge_6
+#DisplayOnly 2.59686e-005 # Early_InitAge_5
+#DisplayOnly 2.95625e-005 # Early_InitAge_4
+#DisplayOnly 3.36522e-005 # Early_InitAge_3
+#DisplayOnly 3.82858e-005 # Early_InitAge_2
+#DisplayOnly 4.35553e-005 # Early_InitAge_1
+#DisplayOnly 4.95385e-005 # Early_RecrDev_1876
+#DisplayOnly 5.63244e-005 # Early_RecrDev_1877
+#DisplayOnly 6.40571e-005 # Early_RecrDev_1878
+#DisplayOnly 7.2834e-005 # Early_RecrDev_1879
+#DisplayOnly 8.27915e-005 # Early_RecrDev_1880
+#DisplayOnly 9.40918e-005 # Early_RecrDev_1881
+#DisplayOnly 0.000106911 # Early_RecrDev_1882
+#DisplayOnly 0.000121491 # Early_RecrDev_1883
+#DisplayOnly 0.000138 # Early_RecrDev_1884
+#DisplayOnly 0.000156709 # Early_RecrDev_1885
+#DisplayOnly 0.000177961 # Early_RecrDev_1886
+#DisplayOnly 0.000202028 # Early_RecrDev_1887
+#DisplayOnly 0.000229344 # Early_RecrDev_1888
+#DisplayOnly 0.000260287 # Early_RecrDev_1889
+#DisplayOnly 0.000295367 # Early_RecrDev_1890
+#DisplayOnly 0.000335122 # Early_RecrDev_1891
+#DisplayOnly 0.000380145 # Early_RecrDev_1892
+#DisplayOnly 0.000431172 # Early_RecrDev_1893
+#DisplayOnly 0.000488969 # Early_RecrDev_1894
+#DisplayOnly 0.000554374 # Early_RecrDev_1895
+#DisplayOnly 0.000628457 # Early_RecrDev_1896
+#DisplayOnly 0.000712291 # Early_RecrDev_1897
+#DisplayOnly 0.000807181 # Early_RecrDev_1898
+#DisplayOnly 0.000914543 # Early_RecrDev_1899
+#DisplayOnly 0.00103597 # Early_RecrDev_1900
+#DisplayOnly 0.00117332 # Early_RecrDev_1901
+#DisplayOnly 0.00132871 # Early_RecrDev_1902
+#DisplayOnly 0.00150437 # Early_RecrDev_1903
+#DisplayOnly 0.00170302 # Early_RecrDev_1904
+#DisplayOnly 0.00192763 # Early_RecrDev_1905
+#DisplayOnly 0.00218149 # Early_RecrDev_1906
+#DisplayOnly 0.00246811 # Early_RecrDev_1907
+#DisplayOnly 0.00279261 # Early_RecrDev_1908
+#DisplayOnly 0.00315757 # Early_RecrDev_1909
+#DisplayOnly 0.00356859 # Early_RecrDev_1910
+#DisplayOnly 0.00403284 # Early_RecrDev_1911
+#DisplayOnly 0.00455556 # Early_RecrDev_1912
+#DisplayOnly 0.00514264 # Early_RecrDev_1913
+#DisplayOnly 0.00579995 # Early_RecrDev_1914
+#DisplayOnly 0.00653148 # Early_RecrDev_1915
+#DisplayOnly 0.00734241 # Early_RecrDev_1916
+#DisplayOnly 0.00823975 # Early_RecrDev_1917
+#DisplayOnly 0.00923148 # Early_RecrDev_1918
+#DisplayOnly 0.0103299 # Early_RecrDev_1919
+#DisplayOnly 0.0115409 # Early_RecrDev_1920
+#DisplayOnly 0.012869 # Early_RecrDev_1921
+#DisplayOnly 0.0143162 # Early_RecrDev_1922
+#DisplayOnly 0.0158844 # Early_RecrDev_1923
+#DisplayOnly 0.0175814 # Early_RecrDev_1924
+#DisplayOnly 0.0194072 # Early_RecrDev_1925
+#DisplayOnly 0.0213663 # Early_RecrDev_1926
+#DisplayOnly 0.023455 # Early_RecrDev_1927
+#DisplayOnly 0.0256717 # Early_RecrDev_1928
+#DisplayOnly 0.0280369 # Early_RecrDev_1929
+#DisplayOnly 0.030606 # Early_RecrDev_1930
+#DisplayOnly 0.0335724 # Early_RecrDev_1931
+#DisplayOnly 0.037211 # Early_RecrDev_1932
+#DisplayOnly 0.0417498 # Early_RecrDev_1933
+#DisplayOnly 0.0486104 # Early_RecrDev_1934
+#DisplayOnly 0.0599142 # Early_RecrDev_1935
+#DisplayOnly 0.0767616 # Early_RecrDev_1936
+#DisplayOnly 0.0990238 # Early_RecrDev_1937
+#DisplayOnly 0.124126 # Early_RecrDev_1938
+#DisplayOnly 0.141748 # Early_RecrDev_1939
+#DisplayOnly 0.134238 # Early_RecrDev_1940
+#DisplayOnly 0.0935285 # Early_RecrDev_1941
+#DisplayOnly 0.0335444 # Early_RecrDev_1942
+#DisplayOnly -0.0176377 # Early_RecrDev_1943
+#DisplayOnly -0.0342226 # Early_RecrDev_1944
+#DisplayOnly -0.0234512 # Early_RecrDev_1945
+#DisplayOnly -0.051768 # Early_RecrDev_1946
+#DisplayOnly -0.150197 # Early_RecrDev_1947
+#DisplayOnly -0.252866 # Early_RecrDev_1948
+#DisplayOnly -0.316018 # Early_RecrDev_1949
+#DisplayOnly -0.320492 # Early_RecrDev_1950
+#DisplayOnly -0.263791 # Early_RecrDev_1951
+#DisplayOnly -0.177836 # Early_RecrDev_1952
+#DisplayOnly -0.121923 # Early_RecrDev_1953
+#DisplayOnly -0.101016 # Early_RecrDev_1954
+#DisplayOnly -0.10551 # Early_RecrDev_1955
+#DisplayOnly -0.117655 # Early_RecrDev_1956
+#DisplayOnly -0.118684 # Early_RecrDev_1957
+#DisplayOnly -0.102616 # Early_RecrDev_1958
+#DisplayOnly -0.0728714 # Main_RecrDev_1959
+#DisplayOnly 0.209189 # Main_RecrDev_1960
+#DisplayOnly 0.170151 # Main_RecrDev_1961
+#DisplayOnly -0.240894 # Main_RecrDev_1962
+#DisplayOnly -0.15338 # Main_RecrDev_1963
+#DisplayOnly 0.207349 # Main_RecrDev_1964
+#DisplayOnly 0.133126 # Main_RecrDev_1965
+#DisplayOnly 0.855057 # Main_RecrDev_1966
+#DisplayOnly 0.00388723 # Main_RecrDev_1967
+#DisplayOnly 0.0605362 # Main_RecrDev_1968
+#DisplayOnly -0.0289152 # Main_RecrDev_1969
+#DisplayOnly 0.0306985 # Main_RecrDev_1970
+#DisplayOnly -0.0065282 # Main_RecrDev_1971
+#DisplayOnly -0.220541 # Main_RecrDev_1972
+#DisplayOnly -0.38524 # Main_RecrDev_1973
+#DisplayOnly -0.120361 # Main_RecrDev_1974
+#DisplayOnly -0.0976959 # Main_RecrDev_1975
+#DisplayOnly 0.150502 # Main_RecrDev_1976
+#DisplayOnly 0.0836412 # Main_RecrDev_1977
+#DisplayOnly -0.2244 # Main_RecrDev_1978
+#DisplayOnly -0.213489 # Main_RecrDev_1979
+#DisplayOnly -0.0286866 # Main_RecrDev_1980
+#DisplayOnly -0.154117 # Main_RecrDev_1981
+#DisplayOnly -0.293498 # Main_RecrDev_1982
+#DisplayOnly -0.121288 # Main_RecrDev_1983
+#DisplayOnly 0.306536 # Main_RecrDev_1984
+#DisplayOnly -0.146571 # Main_RecrDev_1985
+#DisplayOnly -0.721324 # Main_RecrDev_1986
+#DisplayOnly -0.414891 # Main_RecrDev_1987
+#DisplayOnly 0.051882 # Main_RecrDev_1988
+#DisplayOnly 0.296815 # Main_RecrDev_1989
+#DisplayOnly 0.267821 # Main_RecrDev_1990
+#DisplayOnly 0.00445717 # Main_RecrDev_1991
+#DisplayOnly -0.573038 # Main_RecrDev_1992
+#DisplayOnly 0.15303 # Main_RecrDev_1993
+#DisplayOnly 0.307536 # Main_RecrDev_1994
+#DisplayOnly -0.253888 # Main_RecrDev_1995
+#DisplayOnly -0.0998154 # Main_RecrDev_1996
+#DisplayOnly -0.180652 # Main_RecrDev_1997
+#DisplayOnly 0.683188 # Main_RecrDev_1998
+#DisplayOnly 0.285452 # Main_RecrDev_1999
+#DisplayOnly -0.0888615 # Main_RecrDev_2000
+#DisplayOnly -0.25232 # Main_RecrDev_2001
+#DisplayOnly -0.150689 # Main_RecrDev_2002
+#DisplayOnly -0.35722 # Main_RecrDev_2003
+#DisplayOnly -0.250676 # Main_RecrDev_2004
+#DisplayOnly -0.222602 # Main_RecrDev_2005
+#DisplayOnly 0.341556 # Main_RecrDev_2006
+#DisplayOnly 0.548039 # Main_RecrDev_2007
+#DisplayOnly 0.871244 # Main_RecrDev_2008
+#DisplayOnly 0.282725 # Main_RecrDev_2009
+#DisplayOnly 0.0336073 # Main_RecrDev_2010
+#DisplayOnly -0.128754 # Main_RecrDev_2011
+#DisplayOnly -0.134816 # Main_RecrDev_2012
+#DisplayOnly 0 # Late_RecrDev_2013
+#DisplayOnly 0 # Late_RecrDev_2014
+#DisplayOnly 0 # ForeRecr_2015
+#DisplayOnly 0 # ForeRecr_2016
+#DisplayOnly 0 # ForeRecr_2017
+#DisplayOnly 0 # ForeRecr_2018
+#DisplayOnly 0 # ForeRecr_2019
+#DisplayOnly 0 # ForeRecr_2020
+#DisplayOnly 0 # ForeRecr_2021
+#DisplayOnly 0 # ForeRecr_2022
+#DisplayOnly 0 # ForeRecr_2023
+#DisplayOnly 0 # ForeRecr_2024
+#DisplayOnly 0 # ForeRecr_2025
+#DisplayOnly 0 # ForeRecr_2026
+#DisplayOnly 0 # Impl_err_2015
+#DisplayOnly 0 # Impl_err_2016
+#DisplayOnly 0 # Impl_err_2017
+#DisplayOnly 0 # Impl_err_2018
+#DisplayOnly 0 # Impl_err_2019
+#DisplayOnly 0 # Impl_err_2020
+#DisplayOnly 0 # Impl_err_2021
+#DisplayOnly 0 # Impl_err_2022
+#DisplayOnly 0 # Impl_err_2023
+#DisplayOnly 0 # Impl_err_2024
+#DisplayOnly 0 # Impl_err_2025
+#DisplayOnly 0 # Impl_err_2026
+#
+#Fishing Mortality info 
+0.3 # F ballpark for annual F (=Z-M) for specified year
+-2001 # F ballpark year (neg value to disable)
+3 # F_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)
+4 # max F or harvest rate, depends on F_Method
+# no additional F input needed for Fmethod 1
+# if Fmethod=2; read overall start F value; overall phase; N detailed inputs to read
+# if Fmethod=3; read N iterations for tuning for Fmethod 3
+5  # N iterations for tuning F in hybrid method (recommend 3 to 7)
+#
+#_initial_F_parms
+#_LO HI INIT PRIOR PR_type SD PHASE
+ 0 1 0 0.0001 0 99 -1 # InitF_1WinterN
+ 0 1 0 0.0001 0 99 -1 # InitF_2SummerN
+ 0 1 0 0.0001 0 99 -1 # InitF_3WinterS
+ 0 1 0 0.0001 0 99 -1 # InitF_4SummerS
+#
+#_Q_setup
+ # Q_type options:  <0=mirror, 0=float_nobiasadj, 1=float_biasadj, 2=parm_nobiasadj, 3=parm_w_random_dev, 4=parm_w_randwalk, 5=mean_unbiased_float_assign_to_parm
+#_for_env-var:_enter_index_of_the_env-var_to_be_linked
+#_Den-dep  env-var  extra_se  Q_type
+ 1 0 0 4 # 1 WinterN
+ 0 0 0 0 # 2 SummerN
+ 1 0 0 4 # 3 WinterS
+ 0 0 0 0 # 4 SummerS
+ 0 0 1 0 # 5 TriEarly
+ 0 0 1 0 # 6 TriLate
+ 0 0 0 0 # 7 NWFSC
+#
+1 #_0=read one parm for each fleet with random q; 1=read a parm for each year of index
+#_Q_parms(if_any);Qunits_are_ln(q)
+# LO HI INIT PRIOR PR_type SD PHASE
+ -5 5 -0.197964 0 -1 99 3 # Q_power_1_WinterN
+ -5 5 -1.01041 0 -1 99 3 # Q_power_3_WinterS
+ 0.001 2 0.173578 0.22 -1 99 5 # Q_extraSD_5_TriEarly
+ 0.001 2 0.180654 0.16 -1 99 4 # Q_extraSD_6_TriLate
+ -20 5 -6.63008 0 -1 99 1 # LnQ_base_1_WinterN
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1988
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1989
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1990
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1991
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1992
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1993
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1994
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1995
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1996
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1997
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1998
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_1999
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_2000
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_2001
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_2002
+ -20 5 0 -1 -1 99 -1 # Q_walk_1y_2003
+ -20 5 0.577942 -1 -1 99 7 # Q_walk_1y_2004
+ -20 5 0 -1 -1 99 -7 # Q_walk_1y_2005
+ -20 5 0 -1 -1 99 -7 # Q_walk_1y_2006
+ -20 5 0 -1 -1 99 -7 # Q_walk_1y_2007
+ -20 5 0 -1 -1 99 -7 # Q_walk_1y_2008
+ -20 5 0 -1 -1 99 -7 # Q_walk_1y_2009
+ -20 5 -0.112619 0 -1 99 1 # LnQ_base_3_WinterS
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1988
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1989
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1990
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1991
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1992
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1993
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1994
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1995
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1996
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1997
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1998
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_1999
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_2000
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_2001
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_2002
+ -20 5 0 -1 -1 99 -1 # Q_walk_3y_2003
+ -20 5 0.775388 -1 -1 99 7 # Q_walk_3y_2004
+ -20 5 0 -1 -1 99 -7 # Q_walk_3y_2005
+ -20 5 0 -1 -1 99 -7 # Q_walk_3y_2006
+ -20 5 0 -1 -1 99 -7 # Q_walk_3y_2007
+ -20 5 0 -1 -1 99 -7 # Q_walk_3y_2008
+ -20 5 0 -1 -1 99 -7 # Q_walk_3y_2009
+#
+#_size_selex_types
+#discard_options:_0=none;_1=define_retention;_2=retention&mortality;_3=all_discarded_dead
+#_Pattern Discard Male Special
+ 24 1 3 0 # 1 WinterN
+ 24 1 3 0 # 2 SummerN
+ 24 1 3 0 # 3 WinterS
+ 24 1 3 0 # 4 SummerS
+ 24 0 3 0 # 5 TriEarly
+ 24 0 3 0 # 6 TriLate
+ 24 0 3 0 # 7 NWFSC
+#
+#_age_selex_types
+#_Pattern ___ Male Special
+ 10 0 0 0 # 1 WinterN
+ 10 0 0 0 # 2 SummerN
+ 10 0 0 0 # 3 WinterS
+ 10 0 0 0 # 4 SummerS
+ 10 0 0 0 # 5 TriEarly
+ 10 0 0 0 # 6 TriLate
+ 10 0 0 0 # 7 NWFSC
+#_LO HI INIT PRIOR PR_type SD PHASE env-var use_dev dev_minyr dev_maxyr dev_stddev Block Block_Fxn
+ 15 75 47.2528 43.1 -1 5 1 0 0 0 0 0.5 1 1 # SizeSel_1P_1_WinterN
+ -5 3 3 0.7 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_1P_2_WinterN
+ -4 12 3.96404 3.42 -1 5 2 0 0 0 0 0.5 0 0 # SizeSel_1P_3_WinterN
+ -2 15 14 0.21 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_1P_4_WinterN
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_1P_5_WinterN
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_1P_6_WinterN
+ 10 40 25.4309 15 -1 9 1 0 0 0 0 0 2 1 # Retain_1P_1_WinterN
+ 0.1 10 1.73463 3 -1 9 2 0 0 0 0 0 2 1 # Retain_1P_2_WinterN
+ 0.001 1 0.99998 1 -1 9 4 0 0 0 0 0 2 1 # Retain_1P_3_WinterN
+ -10 10 0 0 -1 9 -2 0 0 0 0 0 0 0 # Retain_1P_4_WinterN
+ -15 15 -9.21573 0 -1 5 3 0 0 0 0 0.5 0 0 # SzSel_1Male_Peak_WinterN
+ -15 15 -1.22634 0 -1 5 4 0 0 0 0 0.5 0 0 # SzSel_1Male_Ascend_WinterN
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_1Male_Descend_WinterN
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_1Male_Final_WinterN
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_1Male_Scale_WinterN
+ 15 75 53.9407 43.1 -1 5 1 0 0 0 0 0.5 1 1 # SizeSel_2P_1_SummerN
+ -5 3 3 0.7 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_2P_2_SummerN
+ -4 12 5.35698 3.42 -1 5 2 0 0 0 0 0.5 0 0 # SizeSel_2P_3_SummerN
+ -2 15 14 0.21 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_2P_4_SummerN
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_2P_5_SummerN
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_2P_6_SummerN
+ 10 40 30.6909 15 -1 9 1 0 0 0 0 0 3 1 # Retain_2P_1_SummerN
+ 0.1 10 1.09459 3 -1 9 2 0 0 0 0 0 3 1 # Retain_2P_2_SummerN
+ 0.001 1 0.999937 1 -1 9 4 0 0 0 0 0 3 1 # Retain_2P_3_SummerN
+ -10 10 0 0 -1 9 -2 0 0 0 0 0 0 0 # Retain_2P_4_SummerN
+ -20 15 -13.9081 0 -1 -5 3 0 0 0 0 0.5 0 0 # SzSel_2Male_Peak_SummerN
+ -15 15 -1.88947 0 -1 -5 4 0 0 0 0 0.5 0 0 # SzSel_2Male_Ascend_SummerN
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_2Male_Descend_SummerN
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_2Male_Final_SummerN
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_2Male_Scale_SummerN
+ 15 75 40.5151 43.1 -1 5 1 0 0 0 0 0.5 1 1 # SizeSel_3P_1_WinterS
+ -5 3 3 0.7 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_3P_2_WinterS
+ -4 12 4.60165 3.42 -1 5 2 0 0 0 0 0.5 0 0 # SizeSel_3P_3_WinterS
+ -2 15 14 0.21 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_3P_4_WinterS
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_3P_5_WinterS
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_3P_6_WinterS
+ 10 40 28.777 15 -1 9 1 0 0 0 0 0 2 1 # Retain_3P_1_WinterS
+ 0.1 10 1.16986 3 -1 9 2 0 0 0 0 0 2 1 # Retain_3P_2_WinterS
+ 0.001 1 0.979123 1 -1 9 4 0 0 0 0 0 2 1 # Retain_3P_3_WinterS
+ -10 10 0 0 -1 9 -2 0 0 0 0 0 0 0 # Retain_3P_4_WinterS
+ -15 15 -14.9871 0 -1 5 3 0 0 0 0 0.5 0 0 # SzSel_3Male_Peak_WinterS
+ -15 15 -2.49221 0 -1 5 4 0 0 0 0 0.5 0 0 # SzSel_3Male_Ascend_WinterS
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_3Male_Descend_WinterS
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_3Male_Final_WinterS
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_3Male_Scale_WinterS
+ 15 75 43.17 43.1 -1 5 1 0 0 0 0 0.5 1 1 # SizeSel_4P_1_SummerS
+ -5 3 3 0.7 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_4P_2_SummerS
+ -4 12 4.75662 3.42 -1 5 2 0 0 0 0 0.5 0 0 # SizeSel_4P_3_SummerS
+ -2 15 14 0.21 -1 5 -3 0 0 0 0 0.5 0 0 # SizeSel_4P_4_SummerS
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_4P_5_SummerS
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_4P_6_SummerS
+ 10 40 28.8879 15 -1 9 1 0 0 0 0 0 3 1 # Retain_4P_1_SummerS
+ 0.1 10 0.974913 3 -1 9 2 0 0 0 0 0 3 1 # Retain_4P_2_SummerS
+ 0.001 1 1 1 -1 9 4 0 0 0 0 0 3 1 # Retain_4P_3_SummerS
+ -10 10 0 0 -1 9 -2 0 0 0 0 0 0 0 # Retain_4P_4_SummerS
+ -15 15 -10.7166 0 -1 5 3 0 0 0 0 0.5 0 0 # SzSel_4Male_Peak_SummerS
+ -15 15 -1.44567 0 -1 5 4 0 0 0 0 0.5 0 0 # SzSel_4Male_Ascend_SummerS
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_4Male_Descend_SummerS
+ -15 15 0 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_4Male_Final_SummerS
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_4Male_Scale_SummerS
+ 15 61 36.2165 43.1 -1 5 1 0 0 0 0 0.5 0 0 # SizeSel_5P_1_TriEarly
+ -5 3 3 0.7 -1 5 -2 0 0 0 0 0.5 0 0 # SizeSel_5P_2_TriEarly
+ -4 12 4.32987 3.42 -1 5 1 0 0 0 0 0.5 0 0 # SizeSel_5P_3_TriEarly
+ -2 15 14 0.21 -1 5 -2 0 0 0 0 0.5 0 0 # SizeSel_5P_4_TriEarly
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_5P_5_TriEarly
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_5P_6_TriEarly
+ -15 15 -4.32304 0 -1 5 2 0 0 0 0 0.5 0 0 # SzSel_5Male_Peak_TriEarly
+ -15 15 -0.609632 0 -1 5 2 0 0 0 0 0.5 0 0 # SzSel_5Male_Ascend_TriEarly
+ -15 15 0 0 -1 5 -3 0 0 0 0 0.5 0 0 # SzSel_5Male_Descend_TriEarly
+ -15 15 0 0 -1 5 -3 0 0 0 0 0.5 0 0 # SzSel_5Male_Final_TriEarly
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_5Male_Scale_TriEarly
+ 15 61 36.9086 43.1 -1 5 1 0 0 0 0 0.5 0 0 # SizeSel_6P_1_TriLate
+ -5 3 3 0.7 -1 5 -2 0 0 0 0 0.5 0 0 # SizeSel_6P_2_TriLate
+ -4 12 4.6597 3.42 -1 5 1 0 0 0 0 0.5 0 0 # SizeSel_6P_3_TriLate
+ -2 15 14 0.21 -1 5 -2 0 0 0 0 0.5 0 0 # SizeSel_6P_4_TriLate
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_6P_5_TriLate
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_6P_6_TriLate
+ -15 15 -3.01295 0 -1 5 2 0 0 0 0 0.5 0 0 # SzSel_6Male_Peak_TriLate
+ -15 15 -0.148097 0 -1 5 2 0 0 0 0 0.5 0 0 # SzSel_6Male_Ascend_TriLate
+ -15 15 0 0 -1 5 -3 0 0 0 0 0.5 0 0 # SzSel_6Male_Descend_TriLate
+ -15 15 0 0 -1 5 -3 0 0 0 0 0.5 0 0 # SzSel_6Male_Final_TriLate
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_6Male_Scale_TriLate
+ 15 61 42.0797 43.1 -1 5 1 0 0 0 0 0.5 0 0 # SizeSel_7P_1_NWFSC
+ -5 3 3 0.7 -1 5 -2 0 0 0 0 0.5 0 0 # SizeSel_7P_2_NWFSC
+ -4 12 5.0721 3.42 -1 5 1 0 0 0 0 0.5 0 0 # SizeSel_7P_3_NWFSC
+ -2 15 14 0.21 -1 5 -2 0 0 0 0 0.5 0 0 # SizeSel_7P_4_NWFSC
+ -15 5 -999 -8.9 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_7P_5_NWFSC
+ -5 5 -999 0.15 -1 5 -4 0 0 0 0 0.5 0 0 # SizeSel_7P_6_NWFSC
+ -15 15 -5.25658 0 -1 5 2 0 0 0 0 0.5 0 0 # SzSel_7Male_Peak_NWFSC
+ -15 15 -0.431263 0 -1 5 2 0 0 0 0 0.5 0 0 # SzSel_7Male_Ascend_NWFSC
+ -15 15 0 0 -1 5 -3 0 0 0 0 0.5 0 0 # SzSel_7Male_Descend_NWFSC
+ -15 15 0 0 -1 5 -3 0 0 0 0 0.5 0 0 # SzSel_7Male_Final_NWFSC
+ -15 15 1 0 -1 5 -4 0 0 0 0 0.5 0 0 # SzSel_7Male_Scale_NWFSC
+#_Cond 0 #_custom_sel-env_setup (0/1) 
+#_Cond -2 2 0 0 -1 99 -2 #_placeholder when no enviro fxns
+1 #_custom_sel-blk_setup (0/1) 
+ -3 2 -0.0250161 0 -1 99 4 # SizeSel_1P_1_WinterN_BLK1add_1973
+ -3 2 -0.0883448 0 -1 99 4 # SizeSel_1P_1_WinterN_BLK1add_1983
+ -3 2 -0.0724136 0 -1 99 4 # SizeSel_1P_1_WinterN_BLK1add_1993
+ -3 2 -0.0355355 0 -1 99 4 # SizeSel_1P_1_WinterN_BLK1add_2003
+ -3 2 -0.019817 0 -1 99 4 # SizeSel_1P_1_WinterN_BLK1add_2011
+ -3 2 -0.445023 0 -1 99 4 # Retain_1P_1_WinterN_BLK2add_2003
+ -3 2 0.409224 0 -1 99 4 # Retain_1P_1_WinterN_BLK2add_2010
+ -3 2 0.0655708 0 -1 99 4 # Retain_1P_1_WinterN_BLK2add_2011
+ -3 2 0.099356 0 -1 99 4 # Retain_1P_2_WinterN_BLK2add_2003
+ -3 2 1.25018 0 -1 99 4 # Retain_1P_2_WinterN_BLK2add_2010
+ -3 2 -0.419351 0 -1 99 4 # Retain_1P_2_WinterN_BLK2add_2011
+ -3 2 -0.664178 0 -1 99 4 # Retain_1P_3_WinterN_BLK2add_2003
+ -3 2 -0.137826 0 -1 99 4 # Retain_1P_3_WinterN_BLK2add_2010
+ -3 2 -0.170748 0 -1 99 4 # Retain_1P_3_WinterN_BLK2add_2011
+ -3 2 -0.069761 0 -1 99 4 # SizeSel_2P_1_SummerN_BLK1add_1973
+ -3 2 -0.198208 0 -1 99 4 # SizeSel_2P_1_SummerN_BLK1add_1983
+ -3 2 -0.200792 0 -1 99 4 # SizeSel_2P_1_SummerN_BLK1add_1993
+ -3 2 -0.132317 0 -1 99 4 # SizeSel_2P_1_SummerN_BLK1add_2003
+ -3 2 -0.0498081 0 -1 99 4 # SizeSel_2P_1_SummerN_BLK1add_2011
+ -3 2 -0.00678838 0 -1 99 4 # Retain_2P_1_SummerN_BLK3add_2003
+ -3 2 0.111626 0 -1 99 4 # Retain_2P_1_SummerN_BLK3add_2009
+ -3 2 -0.145761 0 -1 99 4 # Retain_2P_1_SummerN_BLK3add_2011
+ -3 2 0.133987 0 -1 99 4 # Retain_2P_2_SummerN_BLK3add_2003
+ -3 2 0.212414 0 -1 99 4 # Retain_2P_2_SummerN_BLK3add_2009
+ -3 2 0.232584 0 -1 99 4 # Retain_2P_2_SummerN_BLK3add_2011
+ -3 2 -2.30097 0 -1 99 4 # Retain_2P_3_SummerN_BLK3add_2003
+ -3 2 -2.23843 0 -1 99 4 # Retain_2P_3_SummerN_BLK3add_2009
+ -3 2 -0.911167 0 -1 99 4 # Retain_2P_3_SummerN_BLK3add_2011
+ -3 2 -0.0821563 0 -1 99 4 # SizeSel_3P_1_WinterS_BLK1add_1973
+ -3 2 0.114291 0 -1 99 4 # SizeSel_3P_1_WinterS_BLK1add_1983
+ -3 2 0.286555 0 -1 99 4 # SizeSel_3P_1_WinterS_BLK1add_1993
+ -3 2 0.192713 0 -1 99 4 # SizeSel_3P_1_WinterS_BLK1add_2003
+ -3 2 0.229 0 -1 99 4 # SizeSel_3P_1_WinterS_BLK1add_2011
+ -3 2 -0.365953 0 -1 99 4 # Retain_3P_1_WinterS_BLK2add_2003
+ -3 2 0.360385 0 -1 99 4 # Retain_3P_1_WinterS_BLK2add_2010
+ -3 2 -0.164124 0 -1 99 4 # Retain_3P_1_WinterS_BLK2add_2011
+ -3 2 0.478964 0 -1 99 4 # Retain_3P_2_WinterS_BLK2add_2003
+ -3 2 0.37202 0 -1 99 4 # Retain_3P_2_WinterS_BLK2add_2010
+ -3 2 -0.31397 0 -1 99 4 # Retain_3P_2_WinterS_BLK2add_2011
+ -3 4 3.54609 0 -1 99 4 # Retain_3P_3_WinterS_BLK2add_2003
+ -3 2 -0.551551 0 -1 99 4 # Retain_3P_3_WinterS_BLK2add_2010
+ -3 2 1.01575 0 -1 99 4 # Retain_3P_3_WinterS_BLK2add_2011
+ -3 2 -0.174449 0 -1 99 4 # SizeSel_4P_1_SummerS_BLK1add_1973
+ -3 2 -0.264606 0 -1 99 4 # SizeSel_4P_1_SummerS_BLK1add_1983
+ -3 2 -0.000566974 0 -1 99 4 # SizeSel_4P_1_SummerS_BLK1add_1993
+ -3 2 0.092897 0 -1 99 4 # SizeSel_4P_1_SummerS_BLK1add_2003
+ -3 2 0.0808069 0 -1 99 4 # SizeSel_4P_1_SummerS_BLK1add_2011
+ -3 2 -0.139657 0 -1 99 4 # Retain_4P_1_SummerS_BLK3add_2003
+ -3 2 -0.108077 0 -1 99 4 # Retain_4P_1_SummerS_BLK3add_2009
+ -3 2 -0.0249833 0 -1 99 4 # Retain_4P_1_SummerS_BLK3add_2011
+ -3 2 0.439997 0 -1 99 4 # Retain_4P_2_SummerS_BLK3add_2003
+ -3 2 0.345429 0 -1 99 4 # Retain_4P_2_SummerS_BLK3add_2009
+ -3 2 0.268973 0 -1 99 4 # Retain_4P_2_SummerS_BLK3add_2011
+ -3 2 -0.309174 0 -1 99 4 # Retain_4P_3_SummerS_BLK3add_2003
+ -3 2 -0.447534 0 -1 99 4 # Retain_4P_3_SummerS_BLK3add_2009
+ -3 2 -0.368551 0 -1 99 4 # Retain_4P_3_SummerS_BLK3add_2011
+#_Cond No selex parm trends 
+#_Cond -4 # placeholder for selparm_Dev_Phase
+2 #_env/block/dev_adjust_method (1=standard; 2=logistic trans to keep in base parm bounds; 3=standard w/ no bound check)
+#
+# Tag loss and Tag reporting parameters go next
+0  # TG_custom:  0=no read; 1=read if tags exist
+#_Cond -6 6 1 1 2 0.01 -4 0 0 0 0 0 0 0  #_placeholder if no parameters
+#
+1 #_Variance_adjustments_to_input_values
+#_fleet: 1 2 3 4 5 6 7 
+  0 0 0 0 0 0 0 #_add_to_survey_CV
+  0.02 0.02 0.02 0.02 0 0 0 #_add_to_discard_stddev
+  0 0 0 0 0 0 0 #_add_to_bodywt_CV
+  2.38 1.89 1.25 1.34 1.59 1.19 0.59 #_mult_by_lencomp_N
+  6.26 2.21 1.83 1.6 1 1 0.22 #_mult_by_agecomp_N
+  1 1 1 1 1 1 1 #_mult_by_size-at-age_N
+#
+15 #_maxlambdaphase
+1 #_sd_offset
+#
+10 # number of changes to make to default Lambdas (default value is 1.0)
+# Like_comp codes:  1=surv; 2=disc; 3=mnwt; 4=length; 5=age; 6=SizeFreq; 7=sizeage; 8=catch; 9=init_equ_catch; 
+# 10=recrdev; 11=parm_prior; 12=parm_dev; 13=CrashPen; 14=Morphcomp; 15=Tag-comp; 16=Tag-negbin; 17=F_ballpark
+#like_comp fleet/survey  phase  value  sizefreq_method
+ 1 1 1 1 1
+ 1 3 1 1 1
+ 5 1 1 0.5 1
+ 5 2 1 0.5 1
+ 5 3 1 0.5 1
+ 5 4 1 0.5 1
+ 4 1 1 0.5 1
+ 4 2 1 0.5 1
+ 4 3 1 0.5 1
+ 4 4 1 0.5 1
+#
+# lambdas (for info only; columns are phases)
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_CPUE/survey:_1
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_CPUE/survey:_2
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_CPUE/survey:_3
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_CPUE/survey:_4
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_CPUE/survey:_5
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_CPUE/survey:_6
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_CPUE/survey:_7
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_discard:_1
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_discard:_2
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_discard:_3
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_discard:_4
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_discard:_5
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_discard:_6
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_discard:_7
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:1
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:2
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:3
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:4
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:5
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:6
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_meanbodywt:7
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_lencomp:_1
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_lencomp:_2
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_lencomp:_3
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_lencomp:_4
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_lencomp:_5
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_lencomp:_6
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_lencomp:_7
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_agecomp:_1
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_agecomp:_2
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_agecomp:_3
+#  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 #_agecomp:_4
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_agecomp:_5
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 #_agecomp:_6
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_agecomp:_7
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_init_equ_catch
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_recruitments
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_parameter-priors
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_parameter-dev-vectors
+#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 #_crashPenLambda
+#  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 # F_ballpark_lambda
+0 # (0/1) read specs for more stddev reporting 
+ # 0 1 -1 5 1 5 1 -1 5 # placeholder for selex type, len/age, year, N selex bins, Growth pattern, N growth ages, NatAge_area(-1 for all), NatAge_yr, N Natages
+ # placeholder for vector of selex bins to be reported
+ # placeholder for vector of growth ages to be reported
+ # placeholder for vector of NatAges ages to be reported
+999
+

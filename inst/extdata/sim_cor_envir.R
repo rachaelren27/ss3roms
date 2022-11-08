@@ -3,22 +3,13 @@ library(ss3roms)
 library(ggplot2)
 library(r4ss)
 
-data(ROMS)
-ROMS <- dplyr::slice(ROMS, -1)
-
 dat <- SS_readdat(
-  file = system.file(
-    "extdata", "models", "PacificHake", "hake_data.ss",
-    package = "ss3roms"
-  ),
+  file = here("inst", "extdata", "models", "Sablefish", "data.ss"),
   verbose = FALSE
 )
 
 ctl <- SS_readctl(
-  file = system.file(
-    "extdata", "models", "PacificHake", "hake_control.ss",
-    package = "ss3roms"
-  ),
+  file = here("inst", "extdata", "models", "Sablefish", "control.ss"),
   use_datlist = TRUE,
   datlist = dat,
   verbose = FALSE,
@@ -26,18 +17,17 @@ ctl <- SS_readctl(
 )
 
 # --- get recruitment deviations from base model -------------------------------
-peel <- 14
+peel <- 15
 term.year <- 2020 - peel
 
-temp <- SSgetoutput(dir = c(here('inst/extdata/models/PacificHake'),
+temp <- SSgetoutput(dir = c(here('inst/extdata/models/Sablefish'),
                                   here('inst/extdata/models', 
-                                       'retrospectives', 
+                                       's_retrospectives', 
                                        paste0('retro-',peel))),
                           forecast = FALSE) %>% 
-          SSsummarize() 
+          SSsummarize()
 
 base.rec.devs <- temp$recdevs
-base.rec.devs.sub <- base.rec.devs %>% dplyr::filter(Yr >= 1981 & Yr <= 2010)
 
 # base terminal year rec dev
 base.rec.dev <- base.rec.devs %>% dplyr::filter(Yr == term.year) %>%
@@ -56,12 +46,12 @@ create_folder <- function(dir.name) {
     
     # copy ss.exe file
     list.of.files <- list.files(here('inst/extdata/models',
-                                     'retrospectives', 
+                                     's_retrospectives', 
                                      paste0('retro-', peel)),
                                 pattern = "ss.exe")
     # file.create(here(dir.name, 'ss.exe'))
     file.copy(from = here('inst/extdata/models', 
-                          'retrospectives', 
+                          's_retrospectives', 
                           paste0('retro-', peel), 
                           list.of.files),
               to = here(dir.name, list.of.files), overwrite = TRUE)
@@ -78,27 +68,29 @@ simcor <- function (x, ymean=0, ysd=0.5, correlation=0) {
   yresult
 }
 
-simautocorr <- function (rec.devs, ymean=0, ysd=0.5, corr=0) {
-    rho <- arima(base.rec.devs$replist1, order = c(1,0,0))$coef[[1]]
-}
+# simautocorr <- function (rec.devs, ymean=0, ysd=0.5, corr=0) {
+#     rho <- arima(rec.devs$replist1, order = c(1,0,0))$coef[[1]]
+#     sigma <- sqrt(arima(rec.devs$replist1, order = c(1,0,0))$sigma2)
+#     
+# }
 
 # --- fit retrospectives to correlated environmental data ----------------------
 sim_fit_retro <- function(seed.ind, corr, corr.ind){
   s <- seed.ind*46
   set.seed(s)
   
-  ROMS <- ROMS %>% dplyr::mutate(rand = simcor(base.rec.devs.sub$replist1,
-                                                   correlation = corr,
-                                               ymean = mean(base.rec.devs$replist1),
-                                               ysd = sd(base.rec.devs$replist1)))
+  rand <- simcor(base.rec.devs$replist1,
+                 correlation = corr,
+                 ymean = mean(base.rec.devs$replist1),
+                 ysd = sd(base.rec.devs$replist1))
 
   newlists <- add_fleet(
     datlist = dat,
     ctllist = ctl,
     data = data.frame(
-      year = ROMS[["year"]],
+      year = base.rec.devs$Yr,
       seas = 7,
-      obs = exp(ROMS$rand),
+      obs = exp(rand),
       se_log = 0.05
     ),
     fleetname = "env",
@@ -106,13 +98,11 @@ sim_fit_retro <- function(seed.ind, corr, corr.ind){
     units = 31
   )
 
-  dirname <- paste0('test_rand', corr.ind, '-', seed.ind)
+  dirname <- paste0('test_envir', corr.ind, '-', seed.ind)
   create_folder(dirname)
 
   copy_SS_inputs(
-    dir.old = system.file("extdata", "models", "PacificHake",
-                          package = "ss3roms"
-    ),
+    dir.old = here("inst", "extdata", "models", "Sablefish"),
     dir.new = file.path(here(dirname)),
     overwrite = TRUE
   )
@@ -151,7 +141,7 @@ future::plan("multisession", workers = 11)
   env.errs <- c()
   avg.se <- c()
   dirs <- c()
-  num.seed <- 50
+  num.seed <- 10
   ind <- 1
   
 
@@ -163,7 +153,7 @@ future::plan("multisession", workers = 11)
                         .options = furrr::furrr_options(seed = T))
 
     for(s in 1:num.seed) {
-      dirs[s] <- here(paste0('test_rand', ind, '-', s),
+      dirs[s] <- here(paste0('test_envir', ind, '-', s),
                       'retrospectives', paste0('retro-', peel))
     }
 

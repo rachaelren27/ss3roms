@@ -1,5 +1,5 @@
 SS-V3.24U-fast;_08/29/2014;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2_Win64
-Thu Oct 27 14:49:02 2022
+Tue Nov 01 15:03:03 2022
 
 petrale15.dat  datfilename
 petrale15.ctl  ctlfilename
@@ -713,6 +713,17 @@ Processed
  -1 0
  -1 0
  -1 0
+ -1 2.91412e-318
+ -1 0
+ -1 0
+ -1 0
+ -1 0
+ -1 0
+ -1 0
+ -1 0
+ -1 0
+ -1 0
+ -1 5.3866e+228
  -1 0
  -1 0
  -1 0
@@ -728,18 +739,7 @@ Processed
  -1 0
  -1 0
  -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
- -1 0
+ -1 9.82392e+252
  -1 0
  -1 0
  -1 0

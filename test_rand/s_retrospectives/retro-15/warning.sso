@@ -1,0 +1,28 @@
+1 Block:1 1 ends in: 2014 after retroyr+1:  2006
+2 Block:2 3 ends in: 2010 after retroyr+1:  2006
+3 Block:2 4 starts after retroyr+1; should not estimate 
+4 Block:2 4 ends in: 2018 after retroyr+1:  2006
+5 Block:2 5 starts after retroyr+1; should not estimate 
+6 Block:2 5 ends in: 2020 after retroyr+1:  2006
+7 Block:3 3 ends in: 2010 after retroyr+1:  2006
+8 Block:3 4 starts after retroyr+1; should not estimate 
+9 Block:3 4 ends in: 2018 after retroyr+1:  2006
+10 Block:3 5 starts after retroyr+1; should not estimate 
+11 Block:3 5 ends in: 2020 after retroyr+1:  2006
+12 Block:4 2 ends in: 2010 after retroyr+1:  2006
+13 Block:4 3 starts after retroyr+1; should not estimate 
+14 Block:4 3 ends in: 2020 after retroyr+1:  2006
+15 Block:5 2 ends in: 2010 after retroyr+1:  2006
+16 Block:5 3 starts after retroyr+1; should not estimate 
+17 Block:5 3 ends in: 2020 after retroyr+1:  2006
+18 Block:6 1 ends in: 2014 after retroyr+1:  2006
+19 parameter init value is less than parameter min 0 < 0.001 for parm: 8 ; search for <now check> in echoinput for parm_type, will exit if prior requested
+20 parameter init value is less than parameter min 0 < 0.001 for parm: 10 ; search for <now check> in echoinput for parm_type, will exit if prior requested
+21 setting in starter does not request all priors, and 9 parameters have priors and are not estimated, so their prior not included in obj_fun.
+22 1st iteration warning: ssb(endyr)/ssb(styr)= 7.11404e-11; suggest start with larger R0 to get near 0.4; or use depletion fleet option
+23 1st iteration warning: catch logL > 50% total logL; check configuration; suggest start with larger R0
+24 Final gradient: 1485.09 is larger than final_conv: 1e-05
+25 setting positive forecast relF for forecast only fleet: 2
+26 setting positive forecast relF for forecast only fleet: 2
+ N parameters are on or within 1% of min-max bound: 1; check results, variance may be suspect
+N warnings: 26
