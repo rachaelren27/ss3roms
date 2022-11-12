@@ -7,7 +7,7 @@ data(ROMS)
 ROMS <- dplyr::slice(ROMS, -1)
 
 # add fake environmental driver
-set.seed(1500)
+set.seed(1400)
 
 # ROMS <- ROMS %>% dplyr::mutate(test = rnorm(nrow(ROMS)))
 
@@ -29,6 +29,8 @@ rand <- simcor(rec.devs$replist1,
                correlation = 0.25,
                ymean = mean(rec.devs$replist1),
                ysd = sd(rec.devs$replist1))
+
+rand <- faux::rnorm_pre(rec.devs$replist1, mu = mean(rec.devs$replist1), sd = sd(rec.devs$replist1), r = 0.25)
 
 # rand <- rec.devs.sub$replist1
 

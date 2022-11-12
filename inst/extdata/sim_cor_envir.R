@@ -141,7 +141,7 @@ future::plan("multisession", workers = 11)
   env.errs <- c()
   avg.se <- c()
   dirs <- c()
-  num.seed <- 10
+  num.seed <- 50
   ind <- 1
   
 
@@ -162,7 +162,7 @@ future::plan("multisession", workers = 11)
       SSsummarize()
 
     rec.devs <- temp$recdevs
-    # added.se <- temp$indices %>% dplyr::filter(Fleet == 4 & Yr == term.year)
+    added.se <- temp$indices %>% dplyr::filter(Fleet == 4 & Yr == term.year)
 
     # get environmentally-linked recruitment deviation errors and avg se
     for(s in 1:num.seed) {
@@ -170,7 +170,7 @@ future::plan("multisession", workers = 11)
                                                 dplyr::filter(Yr == term.year) %>%
                            dplyr::pull(paste0('replist', s)) - base.rec.dev)
       
-      # avg.se[ind] <- mean(added.se$SE - added.se$SE_input)
+      avg.se[ind] <- mean(added.se$SE - added.se$SE_input)
     }
     
     ind <- ind + 1
